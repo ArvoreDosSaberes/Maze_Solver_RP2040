@@ -1,0 +1,28 @@
+<map id="src/core/Navigator.cpp" name="src/core/Navigator.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="377,5,545,31"/>
+<area shape="rect" id="Node000002" href="$Navigator_8hpp.html" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="269,79,384,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="441,33,362,74,360,70,438,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="664,225,749,251"/>
+<area shape="poly" id="edge16_Node000001_Node000007" title=" " alt="" coords="483,28,558,77,604,112,647,150,674,181,695,212,690,215,670,184,643,154,601,116,555,82,480,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="164,299,231,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="306,106,274,125,238,152,203,186,177,226,174,241,175,256,185,286,180,288,169,258,168,241,172,224,199,183,235,148,271,121,303,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="545,299,607,324"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="385,101,436,117,490,141,541,176,562,199,578,224,586,255,585,285,579,285,581,256,574,226,557,202,537,180,488,146,434,122,384,106"/>
+<area shape="rect" id="Node000005" href="$MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade." alt="" coords="187,225,301,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="322,106,260,215,255,212,318,103"/>
+<area shape="rect" id="Node000006" href="$Planner_8hpp.html" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="359,152,457,177"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="341,102,386,141,383,145,338,106"/>
+<area shape="rect" id="Node000010" href="$Learning_8hpp.html" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="5,152,112,177"/>
+<area shape="poly" id="edge14_Node000002_Node000010" title=" " alt="" coords="284,107,116,151,114,146,283,101"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="239,252,215,289,210,286,234,250"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="298,248,532,298,530,303,297,253"/>
+<area shape="poly" id="edge12_Node000006_Node000003" title=" " alt="" coords="399,179,363,214,315,253,276,276,238,295,235,291,273,272,312,248,360,210,395,176"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="458,173,508,191,532,205,553,224,569,253,577,284,572,285,565,255,549,227,529,210,505,196,457,178"/>
+<area shape="poly" id="edge13_Node000006_Node000005" title=" " alt="" coords="383,180,284,222,282,217,381,175"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="457,175,651,221,650,226,455,180"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="377,225,439,251"/>
+<area shape="poly" id="edge10_Node000006_Node000008" title=" " alt="" coords="411,178,411,212,405,212,405,178"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="464,225,539,251"/>
+<area shape="poly" id="edge11_Node000006_Node000009" title=" " alt="" coords="425,175,477,215,474,219,421,179"/>
+<area shape="poly" id="edge15_Node000010_Node000003" title=" " alt="" coords="70,176,133,249,174,287,171,291,129,253,65,179"/>
+</map>

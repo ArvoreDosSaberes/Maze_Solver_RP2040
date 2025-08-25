@@ -1,0 +1,5 @@
+<map id="src/hal/IRSensorArray.hpp" name="src/hal/IRSensorArray.hpp">
+<area shape="rect" id="Node000001" title="Leitura de 3 sensores IR reflexivos analógicos via ADC." alt="" coords="5,5,192,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="65,79,132,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,31,101,65,96,65,96,31"/>
+</map>

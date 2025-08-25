@@ -1,0 +1,11 @@
+<map id="src/core/Planner.hpp" name="src/core/Planner.hpp">
+<area shape="rect" id="Node000001" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="171,5,326,31"/>
+<area shape="rect" id="Node000002" href="$Navigator_8hpp.html" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="164,79,333,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,44,251,79,246,79,246,44"/>
+<area shape="rect" id="Node000003" href="$firmware_2main_8cpp.html" title="Firmware principal do carrinho resolvedor de labirintos (RP2040)." alt="" coords="5,152,151,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,112,107,154,105,149,207,107"/>
+<area shape="rect" id="Node000004" href="$simulator_2main_8cpp.html" title="Simulador SDL2 do resolvedor de labirintos (visualização 2D)." alt="" coords="175,152,323,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="251,118,251,152,246,152,246,118"/>
+<area shape="rect" id="Node000005" href="$Navigator_8cpp.html" title=" " alt="" coords="347,152,515,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="292,106,402,149,400,154,290,111"/>
+</map>

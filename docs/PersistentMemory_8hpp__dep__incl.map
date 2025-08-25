@@ -1,0 +1,7 @@
+<map id="src/core/PersistentMemory.hpp" name="src/core/PersistentMemory.hpp">
+<area shape="rect" id="Node000001" title="API de persistência de labirintos e estatísticas." alt="" coords="71,5,293,31"/>
+<area shape="rect" id="Node000002" href="$firmware_2main_8cpp.html" title="Firmware principal do carrinho resolvedor de labirintos (RP2040)." alt="" coords="5,79,151,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,41,97,81,94,76,152,36"/>
+<area shape="rect" id="Node000003" href="$PersistentMemory_8cpp.html" title="Implementação da persistência em flash (RP2040) e em arquivo (host)." alt="" coords="175,79,397,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,36,270,76,267,81,209,41"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="inc/Unity/test/testdata/Defs.h" name="inc/Unity/test/testdata/Defs.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="225,5,391,45"/>
+<area shape="rect" id="Node000002" href="$testRunnerGenerator_8c.html" title=" " alt="" coords="5,93,179,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,53,140,96,138,91,247,48"/>
+<area shape="rect" id="Node000003" href="$testRunnerGeneratorSmall_8c.html" title=" " alt="" coords="203,93,413,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="311,59,311,93,305,93,305,59"/>
+<area shape="rect" id="Node000004" href="$testRunnerGeneratorWithMocks_8c.html" title=" " alt="" coords="437,93,683,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="377,47,506,91,504,96,375,52"/>
+</map>

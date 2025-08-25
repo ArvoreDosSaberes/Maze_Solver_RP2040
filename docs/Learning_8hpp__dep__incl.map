@@ -1,0 +1,16 @@
+<map id="src/core/Learning.hpp" name="src/core/Learning.hpp">
+<area shape="rect" id="Node000001" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="291,5,452,31"/>
+<area shape="rect" id="Node000002" href="$Navigator_8hpp.html" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="177,79,347,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="344,40,281,81,278,76,341,36"/>
+<area shape="rect" id="Node000006" href="$PersistentMemory_8hpp.html" title="API de persistência de labirintos e estatísticas." alt="" coords="371,79,593,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="402,36,465,76,462,81,399,40"/>
+<area shape="rect" id="Node000003" href="$firmware_2main_8cpp.html" title="Firmware principal do carrinho resolvedor de labirintos (RP2040)." alt="" coords="371,152,516,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="305,106,415,149,413,154,303,111"/>
+<area shape="rect" id="Node000004" href="$simulator_2main_8cpp.html" title="Simulador SDL2 do resolvedor de labirintos (visualização 2D)." alt="" coords="5,152,153,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="221,111,110,154,108,149,219,106"/>
+<area shape="rect" id="Node000005" href="$Navigator_8cpp.html" title=" " alt="" coords="178,152,346,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="265,118,265,152,259,152,259,118"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="471,118,452,153,447,151,467,115"/>
+<area shape="rect" id="Node000007" href="$PersistentMemory_8cpp.html" title="Implementação da persistência em flash (RP2040) e em arquivo (host)." alt="" coords="541,152,762,177"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="523,107,625,149,623,154,521,112"/>
+</map>

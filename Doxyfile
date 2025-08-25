@@ -1,0 +1,26 @@
+# Doxyfile (mínimo) para RP2040 Maze Solver
+PROJECT_NAME           = "RP2040 Maze Solver"
+PROJECT_NUMBER         = 0.1
+OUTPUT_DIRECTORY       = docs
+GENERATE_HTML          = YES
+HTML_OUTPUT            = .
+GENERATE_LATEX         = NO
+QUIET                  = YES
+INPUT                  = README.md PLAN.md REFERENCE.md src inc firmware simulator
+RECURSIVE              = YES
+EXCLUDE                = inc/Unity
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+JAVADOC_AUTOBRIEF      = YES
+TAB_SIZE               = 4
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_JAVA   = NO
+CASE_SENSE_NAMES       = YES
+WARN_IF_UNDOCUMENTED   = NO
+ALIASES                = "note=\par Note:\n"
+
+# UI/Navigation
+GENERATE_TREEVIEW      = YES
+
+# Main page
+USE_MDFILE_AS_MAINPAGE = README.md
