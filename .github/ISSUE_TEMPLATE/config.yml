@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Perguntas e suporte
+    url: https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/discussions
+    about: Use Discussions para dúvidas gerais e ideias iniciais.
