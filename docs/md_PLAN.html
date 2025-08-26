@@ -92,8 +92,8 @@ $(document).ready(function(){initNavTree('md_PLAN.html',''); initResizable(); })
   <div class="headertitle"><div class="title">RP2040 Maze Solver – Plano e Requisitos</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md13"></a> Documento vivo para guiar o desenvolvimento do firmware, testes e simulador do carrinho solucionador de labirintos.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md14"></a> Documento vivo para guiar o desenvolvimento do firmware, testes e simulador do carrinho solucionador de labirintos.</p>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Objetivo</h1>
 <p>Construir um sistema embarcado (RP2040) que:</p><ul>
 <li>Encontre saída de labirintos, começando com estratégia “Mão Direita”.</li>
@@ -101,7 +101,7 @@ Objetivo</h1>
 <li>Aprenda/ajuste heurísticas ao longo de execuções e persista resultados.</li>
 <li>Ofereça testes unitários (Unity) e simulador gráfico (SDL2) no host.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Requisitos Funcionais</h1>
 <ul>
 <li>[x] Estratégia inicial Right-hand como fallback.</li>
@@ -118,7 +118,7 @@ Requisitos Funcionais</h1>
 <li>[x] Simulador gráfico com paredes verdes e carrinho vermelho.</li>
 <li>[x] Testes com 4 labirintos aleatórios; repetir 2 e verificar melhoria/igual.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Requisitos Não Funcionais</h1>
 <ul>
 <li>Código organizado por camadas: core, hal, firmware, simulator, tests.</li>
@@ -126,7 +126,7 @@ Requisitos Não Funcionais</h1>
 <li>Fail-safes mínimos no controle (validação sensores, clamps, stop em obstáculo).</li>
 <li>Configuração por macros CMake para pinos/canais e parâmetros.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Arquitetura / Pastas</h1>
 <ul>
 <li><code>firmware/</code>: entrada RP2040 (<code>main.cpp</code>) e loop de controle.</li>
@@ -136,7 +136,7 @@ Arquitetura / Pastas</h1>
 <li><code>tests/</code>: testes Unity.</li>
 <li><code>inc/Unity/</code>: framework de testes Unity (vendorizado).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Itens Implementados</h1>
 <ul>
 <li>[x] <code>Navigator</code> com estratégia Right-hand, integração com <code>MazeMap</code>/<code>Planner</code> (BFS) e pontuação com <code>Heuristics</code>.</li>
@@ -154,7 +154,7 @@ Itens Implementados</h1>
 <li>[x] Unity excluído da indexação do Doxygen (<code>EXCLUDE = inc/Unity</code>).</li>
 <li>[x] Licença definida para CC BY-SA 4.0 e arquivo <code>LICENSE</code> adicionado.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Próximas Entregas</h1>
 <ol type="1">
 <li>Mapa e Planejador<ul>
@@ -190,13 +190,13 @@ Próximas Entregas</h1>
 <li>Documentação<ul>
 <li>[x] Doxygen: gerar documentação de API (Doxyfile versionado; saída em <code>docs/</code>).</li>
 <li>[x] <a class="el" href="REFERENCE_8md.html">REFERENCE.md</a>: lista de referências (micromouse, RP2040 SDK, Unity, SDL2, algoritmos).</li>
-<li>[ ] Documentação do código: comentários Doxygen nas classes de <code>src/core/</code> e <code>src/hal/</code> (em progresso).</li>
+<li>[x] Documentação do código: comentários Doxygen nas classes de <code>src/core/</code> e <code>src/hal/</code> (concluído).</li>
 <li>[x] Documentação do firmware: fluxo do <code><a class="el" href="firmware_2main_8cpp.html" title="Firmware principal do carrinho resolvedor de labirintos (RP2040).">firmware/main.cpp</a></code>, comandos e parâmetros <code>CFG_*</code> (feito).</li>
 <li>[x] Documentação do simulador: como compilar/rodar, dependências SDL2 e controles.</li>
 <li>[x] Documentação dos testes: como rodar binários e via CTest.</li>
 <li>[x] Documentação do plano: orientar contribuição via edição de <code><a class="el" href="PLAN_8md.html">PLAN.md</a></code>, PRs e issues.</li>
 <li>[x] README: parametrização do carrinho (macros <code>CFG_*</code>), execução de testes, build de firmware/simulador, dependências.</li>
-<li>[ ] Adicionar badges conforme a lista abaixo:<ul>
+<li>[x] Adicionar badges conforme a lista abaixo:<ul>
 <li>Contador de visitas: <img src="https://visitor-badge.laobi.icu/badge?page_id=ArvoreDosSaberes.Maze_Solver_RP2040" alt="" class="inline"/></li>
 <li><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://img.shields.io/badge/License-CC_BY--SA_4.0-blue.svg" alt="License: CC BY-SA 4.0" style="pointer-events: none;" class="inline"/></a></li>
 <li><img src="https://img.shields.io/badge/Language-Portuguese-brightgreen.svg" alt="Language: Portuguese" style="pointer-events: none;" class="inline"/></li>
@@ -226,18 +226,18 @@ Próximas Entregas</h1>
 </ul>
 </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Próximos passos (curto prazo)</h1>
 <ul>
 <li>[x] Adicionar e versionar <code>Doxyfile</code> com configuração mínima e alvo <code>docs</code> no CMake.</li>
-<li>[ ] Completar comentários Doxygen nos headers do core/hal mais usados (Fase 1).</li>
-<li>[ ] Documentar fontes <code>.cpp</code> correspondentes no core/hal (Fase 2).</li>
+<li>[x] Completar comentários Doxygen nos headers do core/hal mais usados (Fase 1).</li>
+<li>[x] Documentar fontes <code>.cpp</code> correspondentes no core/hal (Fase 2).</li>
 <li>[x] Documentar macros/constantes do <code><a class="el" href="firmware_2main_8cpp.html" title="Firmware principal do carrinho resolvedor de labirintos (RP2040).">firmware/main.cpp</a></code> (Fase 3).</li>
 <li>[x] Documentar <code>simulator/</code> e testes (Fase 4).</li>
 <li>[x] Incluir seção “Contribuindo” no <code><a class="el" href="README_8md.html">README.md</a></code> com padrão de PRs e issues.</li>
 <li>[x] Adicionar workflow de CI (GitHub Actions) para compilar testes e rodar CTest. </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 Build Targets e Opções (CMake)</h1>
 <ul>
 <li>Opções:<ul>
@@ -261,14 +261,14 @@ Build Targets e Opções (CMake)</h1>
 <div class="line"># Firmware (RP2040)</div>
 <div class="line">cmake -B build -S . -DBUILD_FIRMWARE=ON -DBUILD_TESTS=OFF -DBUILD_SIM=OFF</div>
 <div class="line">cmake --build build -j</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md22"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md23"></a>
 Configuração por Macros (exemplos)</h1>
 <ul>
 <li>Motores: <code>CFG_MOTOR_*</code> (pinos, pwm, inversões, etc.).</li>
 <li>Sensores IR: <code>CFG_IR_ADC_*</code> (canais ADC e parâmetros de filtro).</li>
 <li>Velocidades/limiares: <code>CFG_TARGET_SPEED_CM_S</code>, etc.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Métricas de Sucesso</h1>
 <ul>
 <li>Encontra saída com Right-hand em labirintos simples.</li>
@@ -276,13 +276,13 @@ Métricas de Sucesso</h1>
 <li>Persistência funcionando: carrega heurísticas/mapa e melhora/estabiliza desempenho.</li>
 <li>Testes Unity passam em host e simulador exibe trajetórias corretas.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 Notas de Manutenção</h1>
 <ul>
 <li>Este arquivo deve ser atualizado a cada entrega concluída (marcar checkboxes) e quando escopo/decisões mudarem.</li>
 </ul>
 <p>Desenvolva um firmware para um carrinho que soluciona labirintos, ele deve buscar a melhor saida do labiringo, armazenando em sua memória os labrintos solucionados de forma que possa reutilizar em novas tentativas de solução, inicialmente ele deve usar o algorimo da mão direita onde ele sempre tentará primeiro a opção de saida a direita, em seguida ele deve ir melhorando as táticas com novos algorítimos de solução, crie classes que abstraia o acesso as portas PWM para controle dos motores, o carrinho tem dois motores para controlar as rodas de forma a definir a direção, crie uma classe que abstraia o acesso aos sensores de obstáculos analógicos ifravermelhos reflexivos para identificar as opções de saida, a esquerda, frente e direita, faça testes unitários que abra uma interface gráfica que representa o labirinto a ser solucionado de forma aleatóiria teste 4 labirintos aleatóris e repita dois para constatar o melhoramento do algortimo genético. a interface gráfica deve representar o labirinto com suas paredes em verde e o carrinho como um circuito vermelho. use o framework unity que está na biblioteca /inc/unity. apresente o plano para eu aprovar ou fazer alterçaões. faça os ajustes necessários no CMakeFiles.txt para adicionar as bibliotecas e as dependências necessárias para o unity.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Estado atual da documentação (Doxygen)</h1>
 <ul>
 <li>[x] <code><a class="el" href="MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade.">src/core/MazeMap.hpp</a></code></li>
@@ -309,7 +309,7 @@ Estado atual da documentação (Doxygen)</h1>
 </ul>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Convenções Doxygen</h2>
 <ul>
 <li>Cabeçalho por arquivo: <code>@file</code>, <code>@brief</code>, detalhes, autor, <code>@since</code>.</li>
@@ -318,19 +318,18 @@ Convenções Doxygen</h2>
 <li>Preferir <code>@copydoc</code> em .cpp quando a assinatura está no .hpp.</li>
 <li>Manter nomes totalmente qualificados (ex.: <code><a class="el" href="classmaze_1_1Navigator.html" title="Estratégias de navegação disponíveis.">maze::Navigator</a></code>).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Definition of Done (DoD)</h2>
 <ul>
 <li>Build <code>docs</code> sem erros e sem avisos novos.</li>
 <li>Cobertura: símbolos públicos documentados nas pastas alvo; itens internos podem ser resumidos.</li>
 <li>README, PLAN e REFERENCE atualizados quando necessário.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Próximas ações</h2>
 <ul>
-<li>Completar Doxygen nos headers principais de <code>src/core/</code> e <code>src/hal/</code> (Fase 1) e nas fontes <code>.cpp</code> correspondentes (Fase 2).</li>
-<li>Adicionar badges pendentes no README (visitas, licença, linguagem, issues/PRs/stars, status do CI).</li>
-<li>(Opcional) Publicar <code>docs/</code> via GitHub Pages e anexar artifact de Doxygen no CI. </li>
+<li>Geração de release v0.0.1 e fluxo GIT: commits por funcionalidade, atualização de versão em README/PLAN, merge em <code>main</code> e push (incluindo tag).</li>
+<li>(Opcional) Publicar <code>docs/</code> via GitHub Pages e manter artifact de Doxygen no CI. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

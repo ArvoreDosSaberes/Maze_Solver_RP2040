@@ -19,12 +19,26 @@
  * @since 0.1
  */
 #include <SDL2/SDL.h>
+#include <cstdint>
 #include <cstdio>
 #include "core/MazeMap.hpp"
 #include "core/Navigator.hpp"
 
 using namespace maze;
 
+/**
+ * @brief Desenha uma grade retangular para orientar a visualização do labirinto.
+ *
+ * Linhas horizontais e verticais espaçadas pelo tamanho da célula são traçadas
+ * a partir de uma origem (ox, oy).
+ *
+ * @param ren Renderer SDL2 já inicializado.
+ * @param ox Offset X (origem) em pixels.
+ * @param oy Offset Y (origem) em pixels.
+ * @param cell Tamanho da célula em pixels.
+ * @param w Número de células no eixo X.
+ * @param h Número de células no eixo Y.
+ */
 static void draw_grid(SDL_Renderer* ren, int ox, int oy, int cell, int w, int h) {
     SDL_SetRenderDrawColor(ren, 40, 40, 40, 255);
     for (int y = 0; y <= h; ++y) {
@@ -35,6 +49,17 @@ static void draw_grid(SDL_Renderer* ren, int ox, int oy, int cell, int w, int h)
     }
 }
 
+/**
+ * @brief Gera uma leitura de sensores relativa (esquerda, frente, direita) a partir do mapa.
+ *
+ * Converte paredes absolutas da célula atual em flags de caminho livre relativo ao
+ * heading do agente.
+ *
+ * @param m Referência para o `maze::MazeMap` (mapa estático conhecido pelo simulador).
+ * @param cell Posição da célula atual do agente.
+ * @param heading Direção absoluta do agente (0=N, 1=E, 2=S, 3=W).
+ * @return Estrutura `maze::SensorRead` com as flags `left_free`, `front_free`, `right_free`.
+ */
 static maze::SensorRead make_sensor_read(const MazeMap& m, Point cell, uint8_t heading) {
     // Convert absolute walls into relative free flags
     maze::SensorRead sr{};
@@ -54,6 +79,14 @@ static maze::SensorRead make_sensor_read(const MazeMap& m, Point cell, uint8_t h
     return sr;
 }
 
+/**
+ * @brief Verifica se existe passagem livre na direção absoluta informada.
+ *
+ * @param m Mapa do labirinto.
+ * @param cell Célula atual.
+ * @param absdir Direção absoluta desejada ('N', 'E', 'S', 'W').
+ * @return true se não houver parede nessa direção; false caso contrário.
+ */
 static bool can_move(const MazeMap& m, Point cell, char absdir) {
     const Cell& c = m.at(cell.x, cell.y);
     if (absdir=='N') return !c.wall_n;
@@ -63,6 +96,13 @@ static bool can_move(const MazeMap& m, Point cell, char absdir) {
     return false;
 }
 
+/**
+ * @brief Aplica a ação do agente atualizando orientação e/ou posição.
+ *
+ * @param cell Posição do agente (atualizada em caso de avanço).
+ * @param heading Direção absoluta (0=N,1=E,2=S,3=W), atualizada para giros.
+ * @param a Ação decidida pelo `Navigator` (`Left`, `Right`, `Back`, `Forward`).
+ */
 static void apply_move(Point& cell, uint8_t& heading, maze::Action a) {
     // Update heading for Left/Right/Back, and position for Forward
     if (a == maze::Action::Left)  heading = (heading + 3) & 3;
@@ -77,6 +117,16 @@ static void apply_move(Point& cell, uint8_t& heading, maze::Action a) {
     }
 }
 
+/**
+ * @brief Desenha as paredes do labirinto conforme o conteúdo de `MazeMap`.
+ *
+ * @param ren Renderer SDL2.
+ * @param m Referência ao mapa do labirinto.
+ * @param ox Offset X em pixels da origem do desenho.
+ * @param oy Offset Y em pixels da origem do desenho.
+ * @param cell Tamanho da célula em pixels.
+ * @param thick Espessura do traço de parede (pixels). Default: 3.
+ */
 static void draw_maze(SDL_Renderer* ren, const MazeMap& m, int ox, int oy, int cell, int thick=3) {
     SDL_SetRenderDrawColor(ren, 0, 200, 0, 255);
     for (int y = 0; y < m.height(); ++y) {
@@ -92,6 +142,16 @@ static void draw_maze(SDL_Renderer* ren, const MazeMap& m, int ox, int oy, int c
     }
 }
 
+/**
+ * @brief Desenha o agente (corpo e indicação de orientação) na célula informada.
+ *
+ * @param ren Renderer SDL2.
+ * @param p Posição da célula do agente.
+ * @param heading Direção absoluta (0=N,1=E,2=S,3=W).
+ * @param ox Offset X em pixels.
+ * @param oy Offset Y em pixels.
+ * @param cell Tamanho da célula em pixels.
+ */
 static void draw_agent(SDL_Renderer* ren, Point p, int heading, int ox, int oy, int cell) {
     // body
     SDL_SetRenderDrawColor(ren, 200, 0, 0, 255);
@@ -110,6 +170,18 @@ static void draw_agent(SDL_Renderer* ren, Point p, int heading, int ox, int oy, 
     SDL_RenderDrawLine(ren, cx, cy, hx, hy);
 }
 
+/**
+ * @brief Ponto de entrada do simulador 2D com SDL2.
+ *
+ * Inicializa SDL2, constrói um mapa de exemplo, configura o `maze::Navigator` e
+ * executa o loop principal com renderização e controle por teclado.
+ *
+ * Parâmetros de linha de comando não são utilizados neste exemplo.
+ *
+ * @param argc Quantidade de argumentos.
+ * @param argv Vetor de argumentos.
+ * @return 0 em término normal; 1 se ocorrer erro de inicialização SDL.
+ */
 int main(int argc, char** argv) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::fprintf(stderr, "SDL_Init error: %s\n", SDL_GetError());

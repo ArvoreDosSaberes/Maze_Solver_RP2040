@@ -20,5 +20,5 @@ var searchData=
   ['status_17',['status',['../classmaze_1_1PersistentMemory.html#a9ba86d7a9959d2b3bcee8b1ffd21044f',1,'maze::PersistentMemory']]],
   ['stop_18',['stop',['../classhal_1_1MotorControl.html#a75c47e963c0ec795d8fe7d4001e9ef55',1,'hal::MotorControl']]],
   ['strategy_19',['Strategy',['../classmaze_1_1Navigator.html#a339c18934d511c789e6e56ca30e7b018',1,'maze::Navigator']]],
-  ['sucesso_20',['Métricas de Sucesso',['../md_PLAN.html#autotoc_md23',1,'']]]
+  ['sucesso_20',['Métricas de Sucesso',['../md_PLAN.html#autotoc_md24',1,'']]]
 ];

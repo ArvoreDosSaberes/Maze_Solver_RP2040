@@ -14,15 +14,15 @@ var searchData=
   ['cfg_5fmaze_5fw_11',['CFG_MAZE_W',['../firmware_2main_8cpp.html#ad833000d5319685ac5de8727b172fde7',1,'main.cpp']]],
   ['cfg_5fturn_5ffwd_12',['CFG_TURN_FWD',['../firmware_2main_8cpp.html#a69dd581a6ad6aa0ba66dfab4b5950cf8',1,'main.cpp']]],
   ['cfg_5fturn_5frot_13',['CFG_TURN_ROT',['../firmware_2main_8cpp.html#a9268fec9edaf134afea97e9cb110febf',1,'main.cpp']]],
-  ['cmake_14',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md21',1,'']]],
-  ['comandos_20firmware_15',['Logs e comandos (firmware)',['../index.html#autotoc_md11',1,'']]],
+  ['cmake_14',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md22',1,'']]],
+  ['comandos_20firmware_15',['Logs e comandos (firmware)',['../index.html#autotoc_md12',1,'']]],
   ['compilar_20e_20executar_20os_20testes_20host_16',['Compilar e executar os testes (host)',['../index.html#autotoc_md3',1,'']]],
   ['compilar_20o_20firmware_20rp2040_17',['Compilar o firmware (RP2040)',['../index.html#autotoc_md6',1,'']]],
   ['compilar_20o_20simulador_20opcional_18',['Compilar o simulador (opcional)',['../index.html#autotoc_md5',1,'']]],
-  ['configuração_20por_20macros_20exemplos_19',['Configuração por Macros (exemplos)',['../md_PLAN.html#autotoc_md22',1,'']]],
-  ['contribuindo_20',['Contribuindo',['../index.html#autotoc_md10',1,'']]],
+  ['configuração_20por_20macros_20exemplos_19',['Configuração por Macros (exemplos)',['../md_PLAN.html#autotoc_md23',1,'']]],
+  ['contribuindo_20',['Contribuindo',['../index.html#autotoc_md11',1,'']]],
   ['controlcontext_21',['ControlContext',['../structControlContext.html',1,'']]],
-  ['convenções_20doxygen_22',['Convenções Doxygen',['../md_PLAN.html#autotoc_md26',1,'']]],
+  ['convenções_20doxygen_22',['Convenções Doxygen',['../md_PLAN.html#autotoc_md27',1,'']]],
   ['cur_23',['cur',['../structControlContext.html#a4094bd8d4618be3713ce5054b1e87be9',1,'ControlContext']]],
-  ['curto_20prazo_24',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md20',1,'']]]
+  ['curto_20prazo_24',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md21',1,'']]]
 ];
