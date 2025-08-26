@@ -62,19 +62,59 @@ Construir um sistema embarcado (RP2040) que:
 
    - fazer o merge para o main
    - fazer o push para o repositório.
-### Próximos passos versão 0.0.3
+### Versão 0.0.3
 - [x] Adicionar frame lateral com informações do carrinho e suas decisões como é feito no terminal
 - [x] Adicionar um novo botão para iniciar a solução do labirinto, outro para gerar um novo labirinto aleatório e salvar.
 - [x] Persistência com novas extensões: `.maze` (mapa), `.soluct` (solução) e `.plan` (tentativa por passo) com versionamento.
   - Observação: requer `SDL2_ttf` para exibir textos/labels; sem ele, o simulador funciona, porém sem rótulos.
   - Modal de metadados (uma vez por sessão) quando `SDL2_ttf` está presente; caso contrário, usa variáveis de ambiente (`GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`).
+- [X] Carrinho deve demonstrar o planejamento em tempo real
 
-## Próximos passos versão 0.0.4
-- [ ] Carrinho deve demonstrar o planejamento em tempo real
+### Próximos passos versão 0.0.4
+- [ ] Apresentar no simulador estatísticas do processo de descoberta da rota: tentativas mal sucedidas e bem sucedidas, pontuação obtida e ideal, iterações realizadas e ideais. Incluir dados do labirinto: dimensões, número de interseções e curvas.
 
+### Próximos passos versão 0.1.0
+- [ ] Permitir troca de estratégia de planejamento entre RightHand e A*; criar uma interface para facilitar a troca e armazenar, em `src/core/navigator/`, os algoritmos de navegação criados.
+- [ ] Implementar A* (Dijkstra/A*) para rota ótima.
+- [ ] Evoluir o componente de aprendizado para ajustar pesos/heurísticas com base em métricas coletadas.
+
+### Próximos passos versão 0.2.0
+- [ ] Tornar os sensores flexíveis para que possam ser trocados facilmente. devem ser armazenados em hal/sensors os possíveis tipos de sensores, como array para detectar parede e frente, o array de 5 sensores para detectar linha para carinho seguir de linha.
 
 ## Próximos passos (curto prazo)
-Consolidado em "Itens Implementados – Versão 0.0.1". Planejamento em andamento na seção de v0.0.2.
+Consolidado até "Versão 0.0.3". Planejamento em andamento nas seções de v0.0.4 e v0.1.0.
+
+## Plano de Microcommits
+- Objetivo: reduzir risco e facilitar revisão. Cada item abaixo deve resultar em 1 commit pequeno, com mensagem clara no imperativo.
+
+### v0.0.4 – Estatísticas no simulador
+- [ ] Adicionar estrutura `RunStats` no simulador (acertos, falhas, passos, pontuação atual/ideal).
+- [ ] Expor APIs para atualizar `RunStats` a partir do `Navigator` (hooks de evento).
+- [ ] Renderizar painel de estatísticas vazio (wireframe) no frame lateral existente.
+- [ ] Preencher métricas básicas: dimensões do labirinto e contagem de interseções/curvas.
+- [ ] Persistir resumo de `RunStats` em `.plan` (campo `summary`).
+- [ ] Incluir botão/tecla para reset das estatísticas da sessão.
+
+### v0.1.0 – Estratégias de planejamento
+- [ ] Criar enum `PlanningStrategy { RightHand, AStar }` em `src/core`.
+- [ ] Criar interface `INavigatorStrategy` com `decideNextMove()` e dependências mínimas.
+- [ ] Adaptar `RightHandStrategy` a partir da lógica atual do `Navigator`.
+- [ ] Implementar `AStarStrategy` (estrutura esqueleto, sem heurística primeiro).
+- [ ] Integrar seleção de estratégia via config (CLI/env no simulador e macro no firmware).
+- [ ] Exibir estratégia ativa no painel lateral do simulador.
+
+### v0.1.0 – A* incremental
+- [ ] Implementar heurística Manhattan e custo básico.
+- [ ] Integrar A* com `MazeMap` e `Planner` existentes.
+- [ ] Adicionar teste unitário para A* em labirinto simples.
+- [ ] Adicionar fallback automático para RightHand se A* falhar.
+
+### v0.2.0 – Abstrações de sensores
+- [ ] Criar diretório `src/hal/sensors/` e mover `IRSensorArray` para lá.
+- [ ] Definir interface `ISensorArray` e padronizar leitura normalizada.
+- [ ] Implementar drivers: IR parede/frente e (stub) 5 sensores de linha.
+- [ ] Adicionar seleção de sensor via CMake e macros (`CFG_SENSOR_BACKEND`).
+- [ ] Atualizar testes para cobrir múltiplos backends.
 ## Build Targets e Opções (CMake)
 - Opções:
   - `-DBUILD_FIRMWARE=ON|OFF`
@@ -128,7 +168,7 @@ cmake --build build -j
 ## Notas de Manutenção
 - Este arquivo deve ser atualizado a cada entrega concluída (marcar checkboxes) e quando escopo/decisões mudarem.
 
-Desenvolva um firmware para um carrinho que soluciona labirintos, ele deve buscar a melhor saida do labiringo, armazenando em sua memória os labrintos solucionados de forma que possa reutilizar em novas tentativas de solução, inicialmente ele deve usar o algorimo da mão direita onde ele sempre tentará primeiro a opção de saida a direita, em seguida ele deve ir melhorando as táticas com novos algorítimos de solução, crie classes que abstraia o acesso as portas PWM para controle dos motores, o carrinho tem dois motores para controlar as rodas de forma a definir a direção, crie uma classe que abstraia o acesso aos sensores de obstáculos analógicos ifravermelhos reflexivos para identificar as opções de saida, a esquerda, frente e direita, faça testes unitários que abra uma interface gráfica que representa o labirinto a ser solucionado de forma aleatóiria teste 4 labirintos aleatóris e repita dois para constatar o melhoramento do algortimo genético. a interface gráfica deve representar o labirinto com suas paredes em verde e o carrinho como um circuito vermelho. use o framework unity que está na biblioteca /inc/unity. apresente o plano para eu aprovar ou fazer alterçaões. faça os ajustes necessários no CMakeFiles.txt para adicionar as bibliotecas e as dependências necessárias para o unity.
+Desenvolva um firmware para um carrinho que soluciona labirintos. Ele deve buscar a melhor saída do labirinto, armazenando em sua memória os labirintos solucionados para reutilização em novas tentativas. Inicialmente, usar o algoritmo da mão direita (prioriza sempre a saída à direita); depois, aprimorar táticas com novos algoritmos de solução. Crie classes que abstraiam o acesso às portas PWM para controle dos motores; o carrinho tem dois motores que controlam as rodas para definir a direção. Crie uma classe que abstraia o acesso aos sensores de obstáculos analógicos infravermelhos reflexivos para identificar as opções de saída (esquerda, frente e direita). Faça testes unitários que abram uma interface gráfica que representa o labirinto a ser solucionado de forma aleatória; teste 4 labirintos aleatórios e repita dois para constatar o melhoramento do algoritmo. A interface gráfica deve representar o labirinto com paredes em verde e o carrinho como um circuito vermelho. Use o framework Unity que está em `inc/Unity`. Apresente o plano para aprovação e faça os ajustes necessários no `CMakeLists.txt` para adicionar as bibliotecas e dependências do Unity.
 
 ## Estado atual da documentação (Doxygen)
 
