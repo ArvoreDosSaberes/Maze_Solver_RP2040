@@ -917,6 +917,8 @@ int main(int argc, char** argv) {
     fs::path current_map_file; // caminho do arquivo do mapa atual
     Point entrance{}, goal_cell{};
     uint8_t entrance_heading = 1;
+    // Per-step attempt log (.plan): needs to be available during selection phase too
+    std::vector<StepLogEntry> step_log;
 
     SDL_SetWindowTitle(win, ("Escolha: " + items[sel]).c_str());
     while (choosing) {
@@ -1034,8 +1036,7 @@ int main(int argc, char** argv) {
     std::vector<LogLine> log;
     auto push_log = [&](const std::string& s, SDL_Color c){ log.push_back({s,c}); if (log.size() > 1000) log.erase(log.begin(), log.begin()+500); };
     push_log("Pronto. Selecione Iniciar.", SDL_Color{180,220,180,255});
-    // Per-step attempt log (.plan)
-    std::vector<StepLogEntry> step_log;
+    // Per-step attempt log (.plan) declared earlier to allow clearing during selection
     while (running) {
         SDL_Event e; 
         while (SDL_PollEvent(&e)) {
