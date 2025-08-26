@@ -6,7 +6,7 @@ GENERATE_HTML          = YES
 HTML_OUTPUT            = .
 GENERATE_LATEX         = NO
 QUIET                  = YES
-INPUT                  = README.md PLAN.md REFERENCE.md src inc firmware simulator
+INPUT                  = README.md PLAN.md REFERENCE.md STRATEGIA.md NAVIGATOR.md SIMULATOR.md MotorControl_Implementations.md CHANGELOG.md LICENSE src inc firmware simulator
 RECURSIVE              = YES
 EXCLUDE                = inc/Unity
 EXTRACT_ALL            = YES
@@ -24,3 +24,5 @@ GENERATE_TREEVIEW      = YES
 
 # Main page
 USE_MDFILE_AS_MAINPAGE = README.md
+FILE_PATTERNS          = *.md *.hpp *.h *.cpp
+EXCLUDE_PATTERNS       = docs/*

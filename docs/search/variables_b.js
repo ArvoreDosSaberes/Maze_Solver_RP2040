@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_0',['x',['../structmaze_1_1Point.html#ab2ec5a291bca86fb340e047b698e31ff',1,'maze::Point']]]
+  ['planned_0',['planned',['../structControlContext.html#aae891a2fe71634d1353a7edb2643f4cc',1,'ControlContext']]]
 ];

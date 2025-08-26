@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['right_0',['right',['../structhal_1_1IRValues.html#ad80e5ef8f68155baca23dd237bb74a48',1,'hal::IRValues']]],
-  ['right_5ffree_1',['right_free',['../structmaze_1_1SensorRead.html#af11a78f890884adf8c62a5abc33c979b',1,'maze::SensorRead']]]
+  ['motors_0',['motors',['../structControlContext.html#a3109d971b932318c4307284303fde85e',1,'ControlContext']]],
+  ['moved_1',['moved',['../structStepLogEntry.html#aef7ad83d61f6311bb3d69f3334a02f38',1,'StepLogEntry']]]
 ];

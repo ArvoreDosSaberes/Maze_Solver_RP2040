@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.3] - 2025-08-27
+### Added
+- Simulator: save mazes with `.maze` extension (JSON content) under `maze/`.
+- Simulator: export solutions as `.soluct` with metadata, metrics and path (versioned; no new file if content unchanged).
+- Simulator: export per-attempt step logs as `.plan` with detailed `StepLogEntry` history and attempt summary (success/fail, steps, collisions, score).
+- Simulator UI log: more granular messages for actions, collisions, score deltas and totals.
+
+### Changed
+- Simulator file selection now lists `maze/*.maze` instead of `*.json`.
+- Documentation updated (`README.md`, `SIMULATOR.md`, `PLAN.md`, `REFERENCE.md`) to reflect `.maze/.soluct/.plan` formats and versioning behavior.
+
+### Notes
+- Build: simulator still requires SDL2; labels/modals require SDL2_ttf.
+
 ## [0.0.2] - 2025-08-26
 ### Added
 - Simulator: JSON load/save helpers (dimensions, walls, entrance, goal, metadata).

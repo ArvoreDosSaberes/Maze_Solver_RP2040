@@ -1,12 +1,18 @@
 var searchData=
 [
-  ['w_5fback_0',['w_back',['../structmaze_1_1Heuristics.html#a5f7dad73c653d1f0e03b856e95a529c0',1,'maze::Heuristics']]],
-  ['w_5ffront_1',['w_front',['../structmaze_1_1Heuristics.html#ab26cd99a6decffc2a5e3c3d8adc12826',1,'maze::Heuristics']]],
-  ['w_5fleft_2',['w_left',['../structmaze_1_1Heuristics.html#a7a643ca3cecd69005388b07db1976fc3',1,'maze::Heuristics']]],
-  ['w_5fright_3',['w_right',['../structmaze_1_1Heuristics.html#ae3cf134072f27a8e66d461a47a96ba2b',1,'maze::Heuristics']]],
-  ['wall_5fe_4',['wall_e',['../structmaze_1_1Cell.html#a1cdedb17cda9ba5ae0917edc987068f7',1,'maze::Cell']]],
-  ['wall_5fn_5',['wall_n',['../structmaze_1_1Cell.html#a8fe9e25f447e0fef0efa043abb960933',1,'maze::Cell']]],
-  ['wall_5fs_6',['wall_s',['../structmaze_1_1Cell.html#a2e8b315fc73e6262be8d3e228b9f9476',1,'maze::Cell']]],
-  ['wall_5fw_7',['wall_w',['../structmaze_1_1Cell.html#ab5f68b4abab09c979798dbe108cd3aa2',1,'maze::Cell']]],
-  ['width_8',['width',['../classmaze_1_1MazeMap.html#aba61dcfa7f589ff8a54a2c97733eb70c',1,'maze::MazeMap']]]
+  ['o_20firmware_20rp2040_0',['Compilar o firmware (RP2040)',['../index.html#autotoc_md8',1,'']]],
+  ['o_20que_20os_20testes_20validam_1',['O que os testes validam',['../index.html#autotoc_md4',1,'']]],
+  ['o_20simulador_2',['Interação com o simulador',['../md_NAVIGATOR.html#autotoc_md55',1,'']]],
+  ['o_20simulador_20opcional_3',['Compilar o simulador (opcional)',['../index.html#autotoc_md5',1,'']]],
+  ['objetivo_4',['objetivo',['../md_NAVIGATOR.html#autotoc_md54',1,'Estados, início e objetivo'],['../md_PLAN.html#autotoc_md17',1,'Objetivo']]],
+  ['observação_20de_20paredes_20e_20atualização_20do_20mapa_5',['Observação de Paredes e Atualização do Mapa',['../md_STRATEGIA.html#autotoc_md41',1,'']]],
+  ['observações_20do_20simulador_20sdl2_20e_20json_6',['Observações do simulador (SDL2 e JSON)',['../md_PLAN.html#autotoc_md27',1,'']]],
+  ['observecellwalls_7',['observeCellWalls',['../classmaze_1_1Navigator.html#acd3d317259c2254f7ec3ad99827624ce',1,'maze::Navigator']]],
+  ['of_20done_20dod_8',['Definition of Done (DoD)',['../md_PLAN.html#autotoc_md33',1,'']]],
+  ['ok_9',['ok',['../structUIFont.html#aa51cc6b772543171ceb9f289ce46b9fd',1,'UIFont']]],
+  ['on_20line_10',['Aprendizado por reforço simples (on-line)',['../md_NAVIGATOR.html#autotoc_md53',1,'']]],
+  ['opções_20cmake_11',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md26',1,'']]],
+  ['opcional_12',['Compilar o simulador (opcional)',['../index.html#autotoc_md5',1,'']]],
+  ['os_20testes_20host_13',['Compilar e executar os testes (host)',['../index.html#autotoc_md3',1,'']]],
+  ['os_20testes_20validam_14',['O que os testes validam',['../index.html#autotoc_md4',1,'']]]
 ];

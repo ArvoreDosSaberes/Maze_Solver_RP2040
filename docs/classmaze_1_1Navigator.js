@@ -4,6 +4,7 @@ var classmaze_1_1Navigator =
       [ "RightHand", "classmaze_1_1Navigator.html#a339c18934d511c789e6e56ca30e7b018aa51983e0f69f76a68e55efe2e7b700b5", null ]
     ] ],
     [ "applyReward", "classmaze_1_1Navigator.html#ae93755da14974faa8f5eafe6a2d5d92d", null ],
+    [ "currentPlan", "classmaze_1_1Navigator.html#ace454015f7b69b79f9251eff6830ea18", null ],
     [ "decide", "classmaze_1_1Navigator.html#ac2b2dd7cebc0d8d98a96d48dd12a2c5f", null ],
     [ "decidePlanned", "classmaze_1_1Navigator.html#a23da6b95c8eaf2df99ceab34006563d1", null ],
     [ "hasPlan", "classmaze_1_1Navigator.html#ab2a78c95f6ed0fe143f373ccfb9e6e9a", null ],

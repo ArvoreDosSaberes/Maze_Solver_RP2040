@@ -106,7 +106,14 @@ Estrutura</h1>
 <li><code>inc/Unity/</code>: framework de testes Unity (vendorizado)</li>
 </ul>
 <p>Documento relacionado:</p><ul>
-<li><code>MotorControl_Implementations.md</code>: guia para criar novas implementações de <code><a class="el" href="classhal_1_1MotorControl.html" title="Controla dois motores (esquerdo e direito) de tração diferencial.">hal::MotorControl</a></code> (I2C/SPI/PWM...)</li>
+<li><a class="el" href="md_PLAN.html">PLAN.md</a>: planejamento e roadmap de versões</li>
+<li><a class="el" href="md_REFERENCE.html">REFERENCE.md</a>: referência geral do projeto</li>
+<li><a class="el" href="md_NAVIGATOR.html">NAVIGATOR.md</a>: visão detalhada do sistema de navegação, planejamento (BFS) e heurísticas</li>
+<li><a class="el" href="md_STRATEGIA.html">STRATEGIA.md</a>: explica a estratégia atual de busca da saída (Mão Direita + planejamento BFS + exploração)</li>
+<li><a class="el" href="md_SIMULATOR.html">SIMULATOR.md</a>: detalhes de funcionamento da UI, estados, tempo/cronômetro e JSON do simulador</li>
+<li><a class="el" href="md_MotorControl__Implementations.html">MotorControl_Implementations.md</a>: guia para criar novas implementações de <code><a class="el" href="classhal_1_1MotorControl.html" title="Controla dois motores (esquerdo e direito) de tração diferencial.">hal::MotorControl</a></code> (I2C/SPI/PWM...)</li>
+<li><a class="el" href="md_CHANGELOG.html">CHANGELOG.md</a>: notas de versão</li>
+<li>[LICENSE](LICENSE): texto da licença (CC BY-SA 4.0)</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Pré-requisitos (host)</h1>
@@ -114,7 +121,7 @@ Pré-requisitos (host)</h1>
 <li>CMake &gt;= 3.13</li>
 <li>Compilador C++17 (g++/clang++)</li>
 </ul>
-<p>Para firmware RP2040, instale também o Pico SDK. Para o simulador, instale SDL2 (opcional).</p>
+<p>Para firmware RP2040, instale também o Pico SDK. Para o simulador, instale SDL2 (opcional) e, para rótulos/textos na UI, SDL2_ttf (opcional, recomendado).</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Compilar e executar os testes (host)</h1>
 <div class="fragment"><div class="line">cmake -B build-tests -S . -DBUILD_TESTS=ON -DBUILD_FIRMWARE=OFF -DBUILD_SIM=OFF</div>
@@ -140,16 +147,53 @@ O que os testes validam</h1>
 </ul>
 <h1><a class="anchor" id="autotoc_md5"></a>
 Compilar o simulador (opcional)</h1>
-<p>Requer SDL2 no sistema. </p><div class="fragment"><div class="line">cmake -B build-sim -S . -DBUILD_SIM=ON -DBUILD_TESTS=OFF -DBUILD_FIRMWARE=OFF</div>
+<p>Requer SDL2 no sistema. Para renderização de textos (rótulos de botões, log lateral e modal de metadados), instale SDL2_ttf. </p><div class="fragment"><div class="line">cmake -B build-sim -S . -DBUILD_SIM=ON -DBUILD_TESTS=OFF -DBUILD_FIRMWARE=OFF</div>
 <div class="line">cmake --build build-sim --target simulator</div>
 <div class="line">./build-sim/simulator</div>
-</div><!-- fragment --><p>Se o CMake não encontrar SDL2, o alvo não será criado. Instale <code>libsdl2-dev</code> (Linux) ou equivalente.</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><p>Se o CMake não encontrar SDL2, o alvo não será criado. Instale <code>libsdl2-dev</code> (Linux) ou equivalente. Para textos na UI, instale também <code>libsdl2-ttf-dev</code>.</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Recursos do simulador (UI, JSON e seleção)</h2>
+<ul>
+<li>Sidebar (lateral direita) com log de eventos e métricas (passos, colisões, custo).</li>
+<li>Botões: "Iniciar/Parar" e "Novo" (gera labirinto aleatório, salva e reinicia).</li>
+<li>Salvar/carregar labirintos em JSON na pasta <code>maze/</code> (criada automaticamente).</li>
+<li>Exporta a solução ao alcançar o objetivo: salva <code>maze/&lt;mapa&gt;_solution_&lt;n&gt;.json</code> contendo metadados, métricas e o caminho (versionado; não cria nova versão se o conteúdo não mudou).</li>
+<li>Menu/seleção simples: lista <code>maze/*.json</code> em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.</li>
+<li>Metadados salvos no JSON: <code>name</code>, <code>email</code>, <code>github</code>, <code>date</code>.<ul>
+<li>Pré-preenchimento por variáveis de ambiente: <code>GIT_AUTHOR_NAME</code>, <code>GIT_AUTHOR_EMAIL</code>, <code>GITHUB_PROFILE</code>.</li>
+<li>Se ausentes e <code>SDL2_ttf</code> presente, um modal interativo solicita os dados (uma vez por sessão). Sem <code>SDL2_ttf</code>, usa valores padrão das variáveis de ambiente.</li>
+</ul>
+</li>
+<li>Utilitários de filesystem criam <code>maze/</code> quando necessário.</li>
+</ul>
+<p>Comportamentos recentes implementados:</p><ul>
+<li>O cronômetro congela automaticamente ao alcançar o objetivo (o título da janela para de avançar).</li>
+<li>O botão "Novo Labirinto" permanece habilitado após reset e após carregamento de mapa.</li>
+</ul>
+<p>Controles básicos: setas/WASD para navegar entre opções do menu (quando aplicável) e iniciar. Execução gráfica mostra paredes (verde) e agente (vermelho).</p>
+<h3><a class="anchor" id="autotoc_md7"></a>
+Solução de problemas (SDL2/SDL2_ttf)</h3>
+<ul>
+<li>Mensagem: <code>SDL2 not found; simulator target will not be built.</code><ul>
+<li>Debian/Ubuntu: <code>sudo apt-get install libsdl2-dev</code></li>
+<li>Fedora: <code>sudo dnf install SDL2-devel</code></li>
+<li>Arch: <code>sudo pacman -S sdl2</code></li>
+</ul>
+</li>
+<li>Mensagem: <code>SDL2_ttf not found; building simulator without text rendering</code><ul>
+<li>Debian/Ubuntu: <code>sudo apt-get install libsdl2-ttf-dev</code></li>
+<li>Fedora: <code>sudo dnf install SDL2_ttf-devel</code></li>
+<li>Arch: <code>sudo pacman -S sdl2_ttf</code></li>
+<li>Efeito: o simulador executa, porém rótulos e textos não aparecem.</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Compilar o firmware (RP2040)</h1>
 <p>Requer Pico SDK configurado no sistema. </p><div class="fragment"><div class="line">cmake -B build-fw -S . -DBUILD_FIRMWARE=ON -DBUILD_TESTS=OFF -DBUILD_SIM=OFF</div>
 <div class="line">cmake --build build-fw --target rp2040_maze_solver</div>
 </div><!-- fragment --><p> O binário UF2 estará em <code>build-fw/</code> (nome padrão gerado pelo Pico SDK). Parâmetros (overrides sugeridos) podem ser passados via <code>-D</code> no CMake (veja <code>CMakeLists.txt</code>, seções <code>CFG_*</code>).</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Persistência (host e RP2040)</h1>
 <ul>
 <li>Host: heurísticas salvas em <code>~/.rp2040_maze/heuristics.bin</code> por <code>PersistentMemory</code>.</li>
@@ -164,7 +208,7 @@ Persistência (host e RP2040)</h1>
 <li><code>RESET</code>/<code>R</code>: apaga o setor de persistência</li>
 <li><code>STATUS</code>: mostra <code>saved_count</code> e <code>active_profile</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Parametrização (macros CFG_*)</h1>
 <p>Alguns parâmetros podem ser ajustados via opções CMake (passadas com <code>-D</code>):</p><ul>
 <li><code>CFG_TARGET_SPEED_CM_S</code> (float) velocidade alvo de cruzeiro</li>
@@ -175,20 +219,20 @@ Parametrização (macros CFG_*)</h1>
 <div class="line">  -DBUILD_FIRMWARE=ON \</div>
 <div class="line">  -DCFG_TARGET_SPEED_CM_S=12.0 \</div>
 <div class="line">  -DCFG_MOTOR_LEFT_PWM_PIN=4 -DCFG_MOTOR_RIGHT_PWM_PIN=5</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
 Documentação (Doxygen)</h1>
 <p>Gerar documentação local (se <code>doxygen</code> estiver instalado): </p><div class="fragment"><div class="line">doxygen Doxyfile</div>
 </div><!-- fragment --><p> Saída em <code>docs/index.html</code>. Alternativamente via CMake: </p><div class="fragment"><div class="line">cmake -S . -B build</div>
 <div class="line">cmake --build build --target docs -j</div>
 <div class="line"># Abra: docs/index.html</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
 Versão</h1>
 <p>Versão atual: <b>v0.0.1</b>.</p>
 <ul>
-<li>Notas de versão: veja <code>CHANGELOG.md</code></li>
+<li>Notas de versão: veja <code><a class="el" href="CHANGELOG_8md.html">CHANGELOG.md</a></code></li>
 <li>Release no GitHub: <a href="https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1">https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Contribuindo</h1>
 <ul>
 <li>Abra issues descrevendo bug/feature.</li>
@@ -200,14 +244,14 @@ Contribuindo</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Logs e comandos (firmware)</h1>
 <p>Na inicialização, há janela para comandos via USB CDC. Exemplo de sequência:</p><ol type="1">
 <li>Envie <code>STATUS</code> para checar se há heurísticas salvas.</li>
 <li>Envie <code>RESET</code> para apagar.</li>
 <li>Após atingir o objetivo, as heurísticas são salvas automaticamente; reinicie e confira <code>STATUS</code> e logs de carga.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Licença</h1>
 <p>Este projeto é licenciado sob a licença Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</p>
 <ul>

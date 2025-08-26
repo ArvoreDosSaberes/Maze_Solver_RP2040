@@ -24,9 +24,14 @@ Projecto de firmware, core, simulador e testes para um carrinho resolvedor de la
 - `inc/Unity/`: framework de testes Unity (vendorizado)
 
 Documento relacionado:
-- `MotorControl_Implementations.md`: guia para criar novas implementações de `hal::MotorControl` (I2C/SPI/PWM...)
-- `SIMULATOR.md`: detalhes de funcionamento da UI, estados, tempo/cronômetro e JSON do simulador
-- `NAVIGATOR.md`: visão detalhada do sistema de navegação, planejamento (BFS) e heurísticas
+- [PLAN.md](PLAN.md): planejamento e roadmap de versões
+- [REFERENCE.md](REFERENCE.md): referência geral do projeto
+- [NAVIGATOR.md](NAVIGATOR.md): visão detalhada do sistema de navegação, planejamento (BFS) e heurísticas
+- [STRATEGIA.md](STRATEGIA.md): explica a estratégia atual de busca da saída (Mão Direita + planejamento BFS + exploração)
+- [SIMULATOR.md](SIMULATOR.md): detalhes de funcionamento da UI, estados, tempo/cronômetro e formatos de arquivo do simulador (.maze/.soluct/.plan)
+- [MotorControl_Implementations.md](MotorControl_Implementations.md): guia para criar novas implementações de `hal::MotorControl` (I2C/SPI/PWM...)
+- [CHANGELOG.md](CHANGELOG.md): notas de versão
+- [LICENSE](LICENSE): texto da licença (CC BY-SA 4.0)
 
 ## Pré-requisitos (host)
 - CMake >= 3.13
@@ -71,13 +76,15 @@ cmake --build build-sim --target simulator
 
 Se o CMake não encontrar SDL2, o alvo não será criado. Instale `libsdl2-dev` (Linux) ou equivalente. Para textos na UI, instale também `libsdl2-ttf-dev`.
 
-### Recursos do simulador (UI, JSON e seleção)
+### Recursos do simulador (UI, arquivos e seleção)
 
 - Sidebar (lateral direita) com log de eventos e métricas (passos, colisões, custo).
 - Botões: "Iniciar/Parar" e "Novo" (gera labirinto aleatório, salva e reinicia).
-- Salvar/carregar labirintos em JSON na pasta `maze/` (criada automaticamente).
-- Menu/seleção simples: lista `maze/*.json` em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.
-- Metadados salvos no JSON: `name`, `email`, `github`, `date`.
+- Salvar/carregar labirintos em `.maze` (conteúdo JSON) na pasta `maze/` (criada automaticamente).
+- Exporta a solução ao alcançar o objetivo: salva `maze/<mapa>_solution_<n>.soluct` com metadados, métricas e o caminho (versionado; não cria nova versão se o conteúdo não mudou).
+- Exporta o plano/tentativa por passo: salva `maze/<mapa>_attempt_<n>.plan` contendo o log por passo (ação, moveu, colisões, score), status (success/fail) e resumo.
+- Menu/seleção simples: lista `maze/*.maze` em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.
+- Metadados salvos no arquivo: `name`, `email`, `github`, `date`.
   - Pré-preenchimento por variáveis de ambiente: `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
   - Se ausentes e `SDL2_ttf` presente, um modal interativo solicita os dados (uma vez por sessão). Sem `SDL2_ttf`, usa valores padrão das variáveis de ambiente.
 - Utilitários de filesystem criam `maze/` quando necessário.

@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac2b2dd7cebc0d8d98a96d48dd12a2c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decide próxima ação a partir de leituras de sensores.  <br /></td></tr>
 <tr class="separator:ac2b2dd7cebc0d8d98a96d48dd12a2c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac48b6f565ef8008bde8a63ee2c386931" id="r_ac48b6f565ef8008bde8a63ee2c386931"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1Navigator.html#ac48b6f565ef8008bde8a63ee2c386931">setMapDimensions</a> (int w, int h)</td></tr>
-<tr class="memdesc:ac48b6f565ef8008bde8a63ee2c386931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define as dimensões do mapa interno.  <br /></td></tr>
+<tr class="memdesc:ac48b6f565ef8008bde8a63ee2c386931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define as dimensões do mapa interno e reinicia estatísticas de visita.  <br /></td></tr>
 <tr class="separator:ac48b6f565ef8008bde8a63ee2c386931"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd87b98dfd8e94a7295ac66aba68fe10" id="r_acd87b98dfd8e94a7295ac66aba68fe10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1Navigator.html#acd87b98dfd8e94a7295ac66aba68fe10">setStartGoal</a> (<a class="el" href="structmaze_1_1Point.html">Point</a> s, <a class="el" href="structmaze_1_1Point.html">Point</a> g)</td></tr>
 <tr class="memdesc:acd87b98dfd8e94a7295ac66aba68fe10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define célula inicial e objetivo e habilita o estado de objetivo.  <br /></td></tr>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2a78c95f6ed0fe143f373ccfb9e6e9a" id="r_ab2a78c95f6ed0fe143f373ccfb9e6e9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1Navigator.html#ab2a78c95f6ed0fe143f373ccfb9e6e9a">hasPlan</a> () const</td></tr>
 <tr class="memdesc:ab2a78c95f6ed0fe143f373ccfb9e6e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indica se há um plano válido armazenado.  <br /></td></tr>
 <tr class="separator:ab2a78c95f6ed0fe143f373ccfb9e6e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace454015f7b69b79f9251eff6830ea18" id="r_ace454015f7b69b79f9251eff6830ea18"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structmaze_1_1Point.html">Point</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1Navigator.html#ace454015f7b69b79f9251eff6830ea18">currentPlan</a> () const</td></tr>
+<tr class="memdesc:ace454015f7b69b79f9251eff6830ea18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acessa a sequência de pontos do plano atual (somente leitura).  <br /></td></tr>
+<tr class="separator:ace454015f7b69b79f9251eff6830ea18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23da6b95c8eaf2df99ceab34006563d1" id="r_a23da6b95c8eaf2df99ceab34006563d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmaze_1_1Decision.html">Decision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1Navigator.html#a23da6b95c8eaf2df99ceab34006563d1">decidePlanned</a> (<a class="el" href="structmaze_1_1Point.html">Point</a> current, uint8_t heading, const <a class="el" href="structmaze_1_1SensorRead.html">SensorRead</a> &amp;sr)</td></tr>
 <tr class="memdesc:a23da6b95c8eaf2df99ceab34006563d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decide considerando rota planejada (se existir); senão, fallback RightHand.  <br /></td></tr>
 <tr class="separator:a23da6b95c8eaf2df99ceab34006563d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +221,34 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ace454015f7b69b79f9251eff6830ea18" name="ace454015f7b69b79f9251eff6830ea18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace454015f7b69b79f9251eff6830ea18">&#9670;&#160;</a></span>currentPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structmaze_1_1Point.html">Point</a> &gt; &amp; maze::Navigator::currentPlan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Acessa a sequência de pontos do plano atual (somente leitura). </p>
+<p>Útil para visualização em simuladores. Retorna uma referência const ao vetor interno; será vazio quando não houver plano. </p>
 
 </div>
 </div>
@@ -560,7 +591,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Define as dimensões do mapa interno. </p>
+<p>Define as dimensões do mapa interno e reinicia estatísticas de visita. </p>
 
 </div>
 </div>

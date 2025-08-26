@@ -1,28 +1,8 @@
 var searchData=
 [
-  ['cell_0',['Cell',['../structmaze_1_1Cell.html',1,'maze']]],
-  ['cfg_5f_1',['Parametrização (macros CFG_*)',['../index.html#autotoc_md8',1,'']]],
-  ['cfg_5fcontrol_5fperiod_5fms_2',['CFG_CONTROL_PERIOD_MS',['../firmware_2main_8cpp.html#af16ed9ef351d9a6a8f959faeaca1d872',1,'main.cpp']]],
-  ['cfg_5ffwd_5fbase_3',['CFG_FWD_BASE',['../firmware_2main_8cpp.html#a13268b3327c6af8166c3201460b95a5f',1,'main.cpp']]],
-  ['cfg_5fgoal_5fx_4',['CFG_GOAL_X',['../firmware_2main_8cpp.html#a39ffc046c40490fa5ff0470091b5026e',1,'main.cpp']]],
-  ['cfg_5fgoal_5fy_5',['CFG_GOAL_Y',['../firmware_2main_8cpp.html#a6178aadf81f26643b93877db87565244',1,'main.cpp']]],
-  ['cfg_5fir_5falpha_6',['CFG_IR_ALPHA',['../firmware_2main_8cpp.html#aa6a9bb5c6dd70df8cfda07f5d53a6943',1,'main.cpp']]],
-  ['cfg_5fir_5fth_5ffree_7',['CFG_IR_TH_FREE',['../firmware_2main_8cpp.html#a22a1df7f4f38fba668639b4726ec6894',1,'main.cpp']]],
-  ['cfg_5fir_5fth_5fnear_8',['CFG_IR_TH_NEAR',['../firmware_2main_8cpp.html#a6f0e674ae0ee5102b063af8ba7fb7d40',1,'main.cpp']]],
-  ['cfg_5fk_5frot_9',['CFG_K_ROT',['../firmware_2main_8cpp.html#ab9faab68d012aae4675198068f402805',1,'main.cpp']]],
-  ['cfg_5fmaze_5fh_10',['CFG_MAZE_H',['../firmware_2main_8cpp.html#a9d143a57793e5f3ad763df905fa25c3b',1,'main.cpp']]],
-  ['cfg_5fmaze_5fw_11',['CFG_MAZE_W',['../firmware_2main_8cpp.html#ad833000d5319685ac5de8727b172fde7',1,'main.cpp']]],
-  ['cfg_5fturn_5ffwd_12',['CFG_TURN_FWD',['../firmware_2main_8cpp.html#a69dd581a6ad6aa0ba66dfab4b5950cf8',1,'main.cpp']]],
-  ['cfg_5fturn_5frot_13',['CFG_TURN_ROT',['../firmware_2main_8cpp.html#a9268fec9edaf134afea97e9cb110febf',1,'main.cpp']]],
-  ['cmake_14',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md22',1,'']]],
-  ['comandos_20firmware_15',['Logs e comandos (firmware)',['../index.html#autotoc_md12',1,'']]],
-  ['compilar_20e_20executar_20os_20testes_20host_16',['Compilar e executar os testes (host)',['../index.html#autotoc_md3',1,'']]],
-  ['compilar_20o_20firmware_20rp2040_17',['Compilar o firmware (RP2040)',['../index.html#autotoc_md6',1,'']]],
-  ['compilar_20o_20simulador_20opcional_18',['Compilar o simulador (opcional)',['../index.html#autotoc_md5',1,'']]],
-  ['configuração_20por_20macros_20exemplos_19',['Configuração por Macros (exemplos)',['../md_PLAN.html#autotoc_md23',1,'']]],
-  ['contribuindo_20',['Contribuindo',['../index.html#autotoc_md11',1,'']]],
-  ['controlcontext_21',['ControlContext',['../structControlContext.html',1,'']]],
-  ['convenções_20doxygen_22',['Convenções Doxygen',['../md_PLAN.html#autotoc_md27',1,'']]],
-  ['cur_23',['cur',['../structControlContext.html#a4094bd8d4618be3713ce5054b1e87be9',1,'ControlContext']]],
-  ['curto_20prazo_24',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md21',1,'']]]
+  ['2_200_200_202_20a_202025_2008_2026_0',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]],
+  ['2025_2008_2025_1',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]],
+  ['2025_2008_2026_2',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]],
+  ['25_3',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]],
+  ['26_4',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]]
 ];

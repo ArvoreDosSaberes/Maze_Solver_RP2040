@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['loadheuristics_0',['loadHeuristics',['../classmaze_1_1PersistentMemory.html#a2e23940796da3c2bd81e435e5dbd8015',1,'maze::PersistentMemory']]],
-  ['loadmapsnapshot_1',['loadMapSnapshot',['../classmaze_1_1PersistentMemory.html#aad9ba85a97becbee4840c0100d583b27',1,'maze::PersistentMemory']]]
+  ['in_5fbounds_0',['in_bounds',['../classmaze_1_1MazeMap.html#a1d99a898e05f53589d8c2c49ca961def',1,'maze::MazeMap']]],
+  ['irsensorarray_1',['IRSensorArray',['../classhal_1_1IRSensorArray.html#ae0a21d778f5f66e0761b4b80f15682e5',1,'hal::IRSensorArray']]]
 ];

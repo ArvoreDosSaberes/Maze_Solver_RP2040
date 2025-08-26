@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['planroute_0',['planRoute',['../classmaze_1_1Navigator.html#aea2950c9caf6aa5a5f9431b294eb0aaf',1,'maze::Navigator']]]
+  ['observecellwalls_0',['observeCellWalls',['../classmaze_1_1Navigator.html#acd3d317259c2254f7ec3ad99827624ce',1,'maze::Navigator']]]
 ];

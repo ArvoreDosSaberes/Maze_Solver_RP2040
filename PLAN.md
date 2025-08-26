@@ -21,7 +21,7 @@ Construir um sistema embarcado (RP2040) que:
 - [x] Reutilizar conhecimento entre execuções e demonstrar melhora ou estabilidade.
 - [x] Simulador gráfico com paredes verdes e carrinho vermelho.
 - [x] Testes com 4 labirintos aleatórios; repetir 2 e verificar melhoria/igual.
- - [x] Simulador: salvar/carregar labirintos em JSON e seleção de labirinto via menu.
+ - [x] Simulador: salvar/carregar labirintos em `.maze` (conteúdo JSON), exportar solução `.soluct` e plano `.plan`, e seleção de labirinto via menu.
 
 ## Requisitos Não Funcionais
 - Código organizado por camadas: core, hal, firmware, simulator, tests.
@@ -65,8 +65,13 @@ Construir um sistema embarcado (RP2040) que:
 ### Próximos passos versão 0.0.3
 - [x] Adicionar frame lateral com informações do carrinho e suas decisões como é feito no terminal
 - [x] Adicionar um novo botão para iniciar a solução do labirinto, outro para gerar um novo labirinto aleatório e salvar.
+- [x] Persistência com novas extensões: `.maze` (mapa), `.soluct` (solução) e `.plan` (tentativa por passo) com versionamento.
   - Observação: requer `SDL2_ttf` para exibir textos/labels; sem ele, o simulador funciona, porém sem rótulos.
   - Modal de metadados (uma vez por sessão) quando `SDL2_ttf` está presente; caso contrário, usa variáveis de ambiente (`GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`).
+
+## Próximos passos versão 0.0.4
+- [ ] Carrinho deve demonstrar o planejamento em tempo real
+
 
 ## Próximos passos (curto prazo)
 Consolidado em "Itens Implementados – Versão 0.0.1". Planejamento em andamento na seção de v0.0.2.
@@ -94,16 +99,20 @@ cmake -B build -S . -DBUILD_FIRMWARE=ON -DBUILD_TESTS=OFF -DBUILD_SIM=OFF
 cmake --build build -j
 ```
 
-### Observações do simulador (SDL2 e JSON)
+### Observações do simulador (SDL2 e arquivos)
 
 - SDL2 é necessário no host para compilar o alvo `simulator`. Em distribuições Debian/Ubuntu, instale com: `sudo apt-get install libsdl2-dev`.
-- O simulador cria/usa as pastas `maze/` (arquivos `.json`) e `make/` automaticamente, quando necessário.
+- O simulador cria/usa a pasta `maze/` automaticamente quando necessário.
 - Menu do simulador:
-  - Lista arquivos `maze/*.json` em ordem alfabética para seleção.
-  - Opção de gerar um labirinto aleatório e salvar como JSON com metadados.
-- Metadados no JSON: `creator_name`, `creator_email`, `github_profile`, `timestamp`.
+  - Lista arquivos `maze/*.maze` em ordem alfabética para seleção.
+  - Opção de gerar um labirinto aleatório e salvar como `.maze` (JSON) com metadados.
+- Extensões e formatos:
+  - Mapas: `.maze` (conteúdo JSON)
+  - Soluções: `.soluct` (JSON) – versionado sem duplicar conteúdo
+  - Tentativas: `.plan` (JSON) com log por passo e resumo – versionado
+- Metadados: `name`, `email`, `github`, `date`.
   - Podem ser preenchidos via variáveis de ambiente: `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
-  - Se ausentes, o simulador solicita entrada interativa.
+  - Se ausentes e `SDL2_ttf` estiver disponível, o simulador solicita em um modal; caso contrário, usa valores padrão.
 
 ## Configuração por Macros (exemplos)
 - Motores: `CFG_MOTOR_*` (pinos, pwm, inversões, etc.).
@@ -156,6 +165,6 @@ Desenvolva um firmware para um carrinho que soluciona labirintos, ele deve busca
 - README, PLAN e REFERENCE atualizados quando necessário.
 
 ### Próximas ações
-- Geração de release v0.0.2 com integração JSON do simulador e correções de build (includes e organização de código em `simulator/main.cpp`).
-- Atualizar README/CHANGELOG com instruções e notas de versão.
+- Geração de release v0.0.3 com novas extensões (.maze/.soluct/.plan), versionamento de arquivos e logging por passo no simulador.
+- Atualizar README/SIMULATOR/CHANGELOG para refletir formatos e recursos atuais.
 - (Opcional) Publicar `docs/` via GitHub Pages e manter artifact de Doxygen no CI.

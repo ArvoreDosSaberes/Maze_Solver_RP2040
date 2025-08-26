@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['learning_2ehpp_0',['Learning.hpp',['../Learning_8hpp.html',1,'']]]
+  ['irsensorarray_2ecpp_0',['IRSensorArray.cpp',['../IRSensorArray_8cpp.html',1,'']]],
+  ['irsensorarray_2ehpp_1',['IRSensorArray.hpp',['../IRSensorArray_8hpp.html',1,'']]]
 ];

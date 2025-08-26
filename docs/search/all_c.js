@@ -1,25 +1,7 @@
 var searchData=
 [
-  ['parametrização_20macros_20cfg_5f_0',['Parametrização (macros CFG_*)',['../index.html#autotoc_md8',1,'']]],
-  ['passos_20curto_20prazo_1',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md21',1,'']]],
-  ['pastas_2',['Arquitetura / Pastas',['../md_PLAN.html#autotoc_md18',1,'']]],
-  ['persistência_20host_20e_20rp2040_3',['Persistência (host e RP2040)',['../index.html#autotoc_md7',1,'']]],
-  ['persistencestatus_4',['PersistenceStatus',['../structmaze_1_1PersistenceStatus.html',1,'maze']]],
-  ['persistentmemory_5',['PersistentMemory',['../classmaze_1_1PersistentMemory.html',1,'maze']]],
-  ['persistentmemory_2ecpp_6',['PersistentMemory.cpp',['../PersistentMemory_8cpp.html',1,'']]],
-  ['persistentmemory_2ehpp_7',['PersistentMemory.hpp',['../PersistentMemory_8hpp.html',1,'']]],
-  ['plan_2emd_8',['PLAN.md',['../PLAN_8md.html',1,'']]],
-  ['planned_9',['planned',['../structControlContext.html#aae891a2fe71634d1353a7edb2643f4cc',1,'ControlContext']]],
-  ['planner_10',['Planner',['../classmaze_1_1Planner.html',1,'maze']]],
-  ['planner_2ehpp_11',['Planner.hpp',['../Planner_8hpp.html',1,'']]],
-  ['plano_20e_20requisitos_12',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]],
-  ['planroute_13',['planRoute',['../classmaze_1_1Navigator.html#aea2950c9caf6aa5a5f9431b294eb0aaf',1,'maze::Navigator']]],
-  ['point_14',['Point',['../structmaze_1_1Point.html',1,'maze']]],
-  ['por_20macros_20exemplos_15',['Configuração por Macros (exemplos)',['../md_PLAN.html#autotoc_md23',1,'']]],
-  ['pré_20requisitos_20host_16',['Pré-requisitos (host)',['../index.html#autotoc_md2',1,'']]],
-  ['próximas_20ações_17',['Próximas ações',['../md_PLAN.html#autotoc_md29',1,'']]],
-  ['próximas_20entregas_18',['Próximas Entregas',['../md_PLAN.html#autotoc_md20',1,'']]],
-  ['próximos_20passos_20curto_20prazo_19',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md21',1,'']]],
-  ['prazo_20',['Próximos passos (curto prazo)',['../md_PLAN.html#autotoc_md21',1,'']]],
-  ['projeto_21',['Referências do Projeto',['../md_REFERENCE.html',1,'']]]
+  ['geral_0',['geral',['../md_STRATEGIA.html#autotoc_md39',1,'Visão Geral'],['../md_SIMULATOR.html#autotoc_md58',1,'Visão geral']]],
+  ['github_1',['github',['../structMetaInfo.html#adbe5b3305ecb2f83774be3bd39fd7e9a',1,'MetaInfo']]],
+  ['github_20com_20arvoredossaberes_20maze_5fsolver_5frp2040_20releases_20tag_20v0_200_201_200_200_201_20a_202025_2008_2025_2',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]],
+  ['github_20com_20arvoredossaberes_20maze_5fsolver_5frp2040_20releases_20tag_20v0_200_202_200_200_202_20a_202025_2008_2026_3',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]]
 ];

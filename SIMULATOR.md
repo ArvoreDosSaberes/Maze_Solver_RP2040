@@ -5,9 +5,10 @@ Este documento descreve o simulador desktop opcional baseado em SDL2 localizado 
 ## Visão geral
 
 - Renderiza um labirinto e um agente que executa navegação (heurística e/ou planejada) sobre o mapa `maze::MazeMap`.
-- Permite gerar, salvar e carregar labirintos em JSON na pasta `maze/`.
+- Permite gerar, salvar e carregar labirintos em `.maze` (conteúdo JSON) na pasta `maze/`.
 - Interface simples com botões, lista de seleção de mapas e log lateral.
 - O tempo de execução é exibido no título da janela e é congelado automaticamente quando o agente atinge o objetivo.
+- Ao alcançar o objetivo, o simulador exporta a solução em `.soluct` versionado com metadados e métricas e também um registro de tentativa `.plan` com os passos executados.
 
 Arquivos relacionados:
 - Código: `simulator/main.cpp`
@@ -31,7 +32,7 @@ Se SDL2/SDL2_ttf não forem encontrados, o alvo pode não ser criado ou será co
 - Botões:
   - Iniciar/Parar: alterna a execução do agente.
   - Novo Labirinto: gera um labirinto perfeito aleatório, salva em `maze/` e recarrega.
-- Lista de seleção (quando aberta): mostra `maze/*.json`. A primeira opção cria um labirinto novo e salva.
+- Lista de seleção (quando aberta): mostra `maze/*.maze`. A primeira opção cria um labirinto novo e salva.
 - Log lateral: mostra passos, colisões, custo, estado atual e mensagens.
 - Atalhos de teclado:
   - R: reset do episódio atual (recomeça do início mantendo o labirinto).
@@ -56,15 +57,33 @@ Este comportamento foi implementado para que a métrica de tempo represente o de
 
 A transição para `FinishedSuccess` congela o tempo e pausa a simulação.
 
-## Persistência de labirinto (JSON)
+## Persistência de labirinto (formato e extensões)
 
 - Pasta: `maze/` (criada automaticamente se não existir).
-- Formato contém:
+- Mapa `.maze` (conteúdo JSON) contém:
   - Tamanho (largura/altura), paredes por célula, início e objetivo.
   - Metadados: `name`, `email`, `github`, `date`.
 - Metadados:
   - Podem ser preenchidos automaticamente via env: `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
   - Quando `SDL2_ttf` está disponível, um modal solicita esses dados caso ausentes.
+
+## Exportação de solução (.soluct versionado)
+
+- Arquivo: `maze/<mapa>_solution_<n>.soluct`, onde `<n>` incrementa apenas quando o conteúdo muda.
+- Conteúdo inclui:
+  - `map_file`, `width`, `height`
+  - `entrance` (x, y, heading), `goal` (x, y)
+  - `metrics`: `steps`, `collisions`, `time_s`, `cost`
+  - `path`: lista ordenada de células `{x,y}` da rota final
+  - `meta`: `name`, `email`, `github`, `date`
+
+  Política de versionamento: se a nova solução é idêntica à última versão salva para o mesmo mapa, não cria um novo arquivo; caso contrário, incrementa o sufixo `<n>`.
+
+## Exportação de plano/tentativa (.plan)
+
+- Arquivo: `maze/<mapa>_attempt_<n>.plan` (JSON) por execução/episódio.
+- Conteúdo inclui por passo: `from`, `to`, `heading_before`, `action`, `moved`, `event`, `collisions`, `delta_score`, `score_after`, `step_index`.
+- Resumo: `result` (success/fail), `steps`, `collisions`, `score`, metadados e cabeçalho comum (`map_file`, dimensões, entrada/objetivo, `meta`).
 
 ## Solução de problemas
 

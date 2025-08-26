@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['e_20requisitos_0',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]]
+  ['busca_20da_20saída_0',['Estratégia de Navegação e Busca da Saída',['../md_STRATEGIA.html',1,'']]]
 ];

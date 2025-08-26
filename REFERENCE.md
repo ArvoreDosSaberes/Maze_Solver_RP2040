@@ -30,9 +30,14 @@
   - Modal de metadados: exibido uma vez por sessão quando `SDL2_ttf` está disponível.
 - Dependência de texto: rótulos/modal requerem `SDL2_ttf`; sem ele, o simulador roda sem textos.
 
-## Formato JSON do labirinto
+## Formatos de arquivo (.maze/.soluct/.plan)
 
-Arquivo salvo em `maze/*.json`. Estrutura típica:
+Arquivos salvos em `maze/` com as seguintes extensões:
+- `.maze`: mapa do labirinto (conteúdo JSON)
+- `.soluct`: solução final (conteúdo JSON)
+- `.plan`: plano/tentativa por passo (conteúdo JSON)
+
+Estrutura típica de um `.maze`:
 
 ```json
 {
@@ -56,5 +61,49 @@ Arquivo salvo em `maze/*.json`. Estrutura típica:
   - Origem: variáveis de ambiente `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
   - Interativo: quando `SDL2_ttf` presente, um modal solicita/permite editar os campos.
   - Sem `SDL2_ttf`: usa valores padrão (env vars) e timestamp ISO 8601.
+
+Estrutura resumida de um `.soluct` (versão N):
+
+```json
+{
+  "map_file": "maze/maze_16x12_1756227259.maze",
+  "width": 16,
+  "height": 12,
+  "entrance": [0, 0, 1],
+  "goal": [15, 11],
+  "metrics": { "steps": 123, "collisions": 2, "time_s": 4.21, "cost": 121.0 },
+  "path": [[0,0],[1,0], [2,0] /* ... */],
+  "meta": { "name": "...", "email": "...", "github": "...", "date": "..." }
+}
+```
+
+Estrutura resumida de um `.plan` (tentativa M):
+
+```json
+{
+  "map_file": "maze/maze_16x12_1756227259.maze",
+  "width": 16,
+  "height": 12,
+  "entrance": [0, 0, 1],
+  "goal": [15, 11],
+  "steps": [
+    {
+      "from": [0,0],
+      "to": [1,0],
+      "heading_before": 1,
+      "action": "forward",
+      "moved": true,
+      "event": "forward",
+      "collisions": 0,
+      "delta_score": 1.0,
+      "score_after": 1.0,
+      "step_index": 0
+    }
+    /* ... */
+  ],
+  "summary": { "result": "success", "steps": 123, "collisions": 2, "score": 121.0 },
+  "meta": { "name": "...", "email": "...", "github": "...", "date": "..." }
+}
+```
 
 Observação: veja comentários Doxygen nos headers em `src/core/` e `src/hal/` para detalhes de API.

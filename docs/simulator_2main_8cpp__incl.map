@@ -1,33 +1,56 @@
 <map id="simulator/main.cpp" name="simulator/main.cpp">
-<area shape="rect" id="Node000001" title="Simulador SDL2 do resolvedor de labirintos (visualização 2D)." alt="" coords="386,5,534,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="259,79,355,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="436,33,345,75,343,70,434,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="571,299,637,324"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="535,28,619,47,653,61,675,77,683,83,693,84,703,86,710,93,710,110,703,138,657,252,644,273,629,291,625,287,640,270,652,249,698,136,705,109,705,96,700,91,692,90,681,88,672,81,651,65,617,52,534,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="429,79,491,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="463,31,463,65,457,65,457,31"/>
-<area shape="rect" id="Node000005" href="$MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade." alt="" coords="421,225,566,251"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="450,32,433,53,420,80,418,91,420,103,431,135,446,164,478,213,473,216,441,167,426,137,415,105,412,91,415,78,429,50,446,29"/>
-<area shape="rect" id="Node000007" href="$Navigator_8hpp.html" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="515,79,661,104"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="482,28,556,69,554,74,479,33"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="512,248,576,289,573,293,510,253"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="301,299,363,324"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="468,253,372,295,370,291,466,248"/>
-<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="604,102,624,123,641,151,647,188,643,225,632,260,620,288,615,285,627,258,638,224,642,188,636,153,620,126,600,106"/>
-<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="565,106,536,126,510,153,499,182,495,212,490,211,494,181,506,151,532,122,563,102"/>
-<area shape="poly" id="edge9_Node000007_Node000006" title=" " alt="" coords="515,105,388,125,244,155,207,162,172,165,112,168,86,173,61,183,37,200,13,227,8,238,13,249,30,263,58,274,132,291,215,301,287,306,287,311,215,306,131,296,56,279,28,267,8,252,3,238,8,224,33,196,58,178,84,168,111,163,172,159,206,156,243,149,387,120,514,100"/>
-<area shape="rect" id="Node000008" href="$Planner_8hpp.html" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="256,152,355,177"/>
-<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="543,107,365,151,363,146,542,101"/>
-<area shape="rect" id="Node000012" href="$Learning_8hpp.html" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="520,152,627,177"/>
-<area shape="poly" id="edge18_Node000007_Node000012" title=" " alt="" coords="588,105,581,139,576,138,583,104"/>
-<area shape="poly" id="edge16_Node000008_Node000003" title=" " alt="" coords="318,176,357,211,411,248,448,265,486,279,558,298,556,304,485,284,446,270,408,253,354,215,315,180"/>
-<area shape="poly" id="edge17_Node000008_Node000005" title=" " alt="" coords="336,175,451,218,449,223,335,180"/>
-<area shape="poly" id="edge12_Node000008_Node000006" title=" " alt="" coords="310,177,330,284,325,285,305,178"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="23,225,108,251"/>
-<area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="267,180,118,224,117,219,266,175"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="133,225,195,251"/>
-<area shape="poly" id="edge14_Node000008_Node000010" title=" " alt="" coords="284,180,200,221,198,217,281,175"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="220,225,295,251"/>
-<area shape="poly" id="edge15_Node000008_Node000011" title=" " alt="" coords="300,179,275,216,270,213,295,176"/>
-<area shape="poly" id="edge19_Node000012_Node000003" title=" " alt="" coords="578,177,601,285,596,286,573,178"/>
+<area shape="rect" id="Node000001" title="Simulador SDL2 do resolvedor de labirintos (visualização 2D)." alt="" coords="1079,5,1227,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,101,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1079,23,670,39,397,56,120,81,115,82,115,77,120,76,397,50,670,33,1079,18"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="241,299,308,324"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1079,21,946,23,769,31,571,49,470,63,372,81,307,90,254,96,230,101,208,112,187,129,166,153,158,172,158,190,165,209,176,227,210,262,246,289,242,293,206,266,172,231,160,211,153,191,153,171,162,151,183,125,205,107,229,96,253,90,307,85,372,76,470,58,570,44,769,26,946,18,1079,16"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="1032,79,1093,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1140,33,1090,72,1087,68,1137,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="1117,79,1189,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1156,31,1156,65,1151,65,1151,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="637,299,699,324"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1093,33,1043,51,1019,64,998,81,980,102,970,123,961,167,952,210,940,232,920,253,897,269,870,283,815,301,760,310,713,313,713,308,760,305,814,296,868,278,894,265,917,249,936,229,947,208,956,166,965,121,976,99,994,77,1016,60,1041,46,1091,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="821,225,907,251"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1079,24,1041,30,1000,41,961,57,927,81,903,111,886,146,875,182,869,212,864,211,870,180,881,144,898,108,924,77,959,52,999,36,1040,25,1079,19"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="829,299,888,324"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1105,33,1061,51,1040,64,1022,80,1006,102,998,123,993,164,988,207,980,229,965,252,935,279,902,297,900,292,932,274,961,249,975,227,983,205,988,163,993,121,1002,99,1018,77,1037,60,1058,47,1103,28"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="1213,79,1304,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1172,28,1232,69,1229,73,1169,33"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1329,79,1402,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1188,28,1319,72,1317,77,1187,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1427,79,1501,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1204,28,1413,76,1412,81,1203,33"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1525,79,1584,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1228,27,1357,46,1512,76,1511,81,1356,52,1227,32"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1608,79,1688,104"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1228,25,1392,45,1595,76,1594,81,1391,50,1227,30"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1713,79,1778,104"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1228,22,1436,40,1566,56,1699,76,1699,81,1565,61,1436,45,1227,27"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="1802,79,1867,104"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1228,20,1473,37,1629,53,1788,76,1787,81,1628,58,1473,42,1227,25"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="1892,79,1967,104"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1228,19,1510,36,1692,52,1879,76,1878,81,1691,57,1509,41,1227,25"/>
+<area shape="rect" id="Node000017" href="$MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade." alt="" coords="651,225,797,251"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1079,29,992,47,945,62,901,81,853,112,809,149,744,216,740,213,805,145,850,108,899,76,943,57,990,42,1078,24"/>
+<area shape="rect" id="Node000018" href="$Navigator_8hpp.html" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="384,79,531,104"/>
+<area shape="poly" id="edge20_Node000001_Node000018" title=" " alt="" coords="1079,30,544,84,544,79,1079,24"/>
+<area shape="poly" id="edge18_Node000017_Node000003" title=" " alt="" coords="652,253,322,305,321,300,651,248"/>
+<area shape="poly" id="edge17_Node000017_Node000006" title=" " alt="" coords="717,253,688,289,683,286,713,249"/>
+<area shape="poly" id="edge19_Node000017_Node000008" title=" " alt="" coords="747,248,826,290,823,294,744,253"/>
+<area shape="poly" id="edge21_Node000018_Node000003" title=" " alt="" coords="431,106,394,126,359,154,334,186,313,222,285,286,280,284,308,220,329,183,355,150,391,121,428,102"/>
+<area shape="poly" id="edge22_Node000018_Node000006" title=" " alt="" coords="448,106,426,134,403,172,395,192,392,212,394,231,403,249,417,260,439,270,497,286,563,297,623,304,623,309,563,303,496,292,437,275,414,265,399,252,389,233,387,212,390,191,398,170,421,131,444,103"/>
+<area shape="poly" id="edge23_Node000018_Node000017" title=" " alt="" coords="491,102,543,122,601,150,655,183,700,215,697,219,652,187,599,154,541,127,489,107"/>
+<area shape="rect" id="Node000019" href="$Planner_8hpp.html" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="489,152,588,177"/>
+<area shape="poly" id="edge24_Node000018_Node000019" title=" " alt="" coords="472,102,517,141,513,145,469,106"/>
+<area shape="rect" id="Node000022" href="$Learning_8hpp.html" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="176,152,283,177"/>
+<area shape="poly" id="edge31_Node000018_Node000022" title=" " alt="" coords="421,107,280,150,279,145,420,101"/>
+<area shape="poly" id="edge29_Node000019_Node000003" title=" " alt="" coords="509,180,458,201,403,228,348,261,302,293,299,288,345,256,400,223,456,196,507,175"/>
+<area shape="poly" id="edge25_Node000019_Node000006" title=" " alt="" coords="551,176,650,287,647,290,547,180"/>
+<area shape="poly" id="edge26_Node000019_Node000007" title=" " alt="" coords="589,174,808,222,807,227,588,179"/>
+<area shape="poly" id="edge30_Node000019_Node000017" title=" " alt="" coords="569,175,682,218,680,223,567,180"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="414,225,477,251"/>
+<area shape="poly" id="edge27_Node000019_Node000020" title=" " alt="" coords="525,179,473,219,470,215,522,175"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="501,225,576,251"/>
+<area shape="poly" id="edge28_Node000019_Node000021" title=" " alt="" coords="541,178,541,212,536,212,536,178"/>
+<area shape="poly" id="edge32_Node000022_Node000003" title=" " alt="" coords="236,177,269,285,264,286,230,179"/>
 </map>

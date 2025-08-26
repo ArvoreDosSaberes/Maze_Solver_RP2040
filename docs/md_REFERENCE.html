@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('md_REFERENCE.html',''); initResizable(
   <div class="headertitle"><div class="title">Referências do Projeto</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md30"></a></p><ul>
+<div class="textblock"><p><a class="anchor" id="autotoc_md35"></a></p><ul>
 <li>Micromouse e navegação em labirintos<ul>
 <li>IEEE Micromouse Resources: <a href="https://ctms.engin.umich.edu/wp-content/uploads/sites/441/2019/06/Micromouse.pdf">https://ctms.engin.umich.edu/wp-content/uploads/sites/441/2019/06/Micromouse.pdf</a></li>
 <li>Micromouse Online (conceitos de mapas, flood fill): <a href="https://www.micromouseonline.com/">https://www.micromouseonline.com/</a></li>
@@ -127,6 +127,44 @@ $(document).ready(function(){initNavTree('md_REFERENCE.html',''); initResizable(
 </li>
 <li>CMake<ul>
 <li>Modern CMake: <a href="https://cliutils.gitlab.io/modern-cmake/">https://cliutils.gitlab.io/modern-cmake/</a></li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md36"></a>
+Simulador (controles e UI)</h1>
+<ul>
+<li>Controles: setas ou WASD para navegar no menu/seleção e iniciar.</li>
+<li>UI:<ul>
+<li>Sidebar (lateral direita): log de eventos e métricas (passos, colisões, custo).</li>
+<li>Botões: "Iniciar/Parar" e "Novo" (gera labirinto aleatório, salva e reinicia).</li>
+<li>Modal de metadados: exibido uma vez por sessão quando <code>SDL2_ttf</code> está disponível.</li>
+</ul>
+</li>
+<li>Dependência de texto: rótulos/modal requerem <code>SDL2_ttf</code>; sem ele, o simulador roda sem textos.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md37"></a>
+Formato JSON do labirinto</h1>
+<p>Arquivo salvo em <code>maze/*.json</code>. Estrutura típica:</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">  &quot;width&quot;: 16,</div>
+<div class="line">  &quot;height&quot;: 16,</div>
+<div class="line">  &quot;entrance&quot;: [0, 0],</div>
+<div class="line">  &quot;goal&quot;: [15, 15],</div>
+<div class="line">  &quot;walls&quot;: [</div>
+<div class="line">    // representação compacta por células ou arestas conforme implementação</div>
+<div class="line">  ],</div>
+<div class="line">  &quot;meta&quot;: {</div>
+<div class="line">    &quot;name&quot;: &quot;Seu Nome&quot;,</div>
+<div class="line">    &quot;email&quot;: &quot;seu@email&quot;,</div>
+<div class="line">    &quot;github&quot;: &quot;https://github.com/usuario&quot;,</div>
+<div class="line">    &quot;date&quot;: &quot;2025-08-26T12:34:56Z&quot;</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>Metadados (bloco <code>meta</code>):<ul>
+<li>Origem: variáveis de ambiente <code>GIT_AUTHOR_NAME</code>, <code>GIT_AUTHOR_EMAIL</code>, <code>GITHUB_PROFILE</code>.</li>
+<li>Interativo: quando <code>SDL2_ttf</code> presente, um modal solicita/permite editar os campos.</li>
+<li>Sem <code>SDL2_ttf</code>: usa valores padrão (env vars) e timestamp ISO 8601.</li>
 </ul>
 </li>
 </ul>

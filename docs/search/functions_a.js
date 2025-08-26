@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readall_0',['readAll',['../classhal_1_1IRSensorArray.html#a67877d7b2ded0c15df3f6a5264ddc464',1,'hal::IRSensorArray']]]
+  ['planroute_0',['planRoute',['../classmaze_1_1Navigator.html#aea2950c9caf6aa5a5f9431b294eb0aaf',1,'maze::Navigator']]]
 ];

@@ -1,25 +1,27 @@
 <map id="src/core/Navigator.hpp" name="src/core/Navigator.hpp">
-<area shape="rect" id="Node000001" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="87,5,256,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="55,225,122,251"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,33,50,51,32,64,18,80,10,97,8,115,12,133,19,151,42,186,68,214,64,218,38,189,15,154,7,134,3,115,5,96,13,77,29,60,48,46,90,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="249,225,312,251"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,28,339,47,448,74,499,91,544,109,580,129,604,150,610,165,604,179,585,194,556,206,481,223,398,233,326,238,325,233,397,228,480,218,555,201,582,189,600,176,605,165,600,154,577,133,542,114,497,96,446,79,338,52,241,33"/>
-<area shape="rect" id="Node000004" href="$MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade." alt="" coords="79,152,192,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,32,144,139,139,138,166,30"/>
-<area shape="rect" id="Node000005" href="$Planner_8hpp.html" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="231,79,330,104"/>
-<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="190,28,253,69,250,73,188,33"/>
-<area shape="rect" id="Node000009" href="$Learning_8hpp.html" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="27,79,134,104"/>
-<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="159,33,108,72,105,68,155,29"/>
-<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="130,179,106,215,102,212,126,176"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="160,175,246,217,244,222,158,180"/>
-<area shape="poly" id="edge11_Node000005_Node000002" title=" " alt="" coords="275,106,246,141,206,179,169,203,132,222,130,217,167,199,203,175,243,137,270,103"/>
-<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="283,104,283,212,278,212,278,104"/>
-<area shape="poly" id="edge12_Node000005_Node000004" title=" " alt="" coords="259,106,172,148,170,144,256,102"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="505,152,590,177"/>
-<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="324,101,492,146,491,151,323,107"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="319,152,381,177"/>
-<area shape="poly" id="edge9_Node000005_Node000007" title=" " alt="" coords="294,102,331,140,328,144,290,106"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="406,152,481,177"/>
-<area shape="poly" id="edge10_Node000005_Node000008" title=" " alt="" coords="308,102,405,144,403,149,306,106"/>
-<area shape="poly" id="edge14_Node000009_Node000002" title=" " alt="" coords="79,105,71,137,70,177,81,212,75,213,65,178,66,137,74,104"/>
+<area shape="rect" id="Node000001" title="Núcleo de decisão de navegação (plataforma&#45;agnóstico)." alt="" coords="97,5,266,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="28,225,95,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,32,54,50,35,63,20,80,12,96,9,113,14,149,29,184,47,213,42,216,24,186,9,151,3,113,7,94,15,77,31,59,51,45,96,27"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="245,225,307,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="266,16,349,25,395,33,441,46,486,63,529,86,567,115,600,151,605,165,599,179,580,194,552,206,477,223,393,233,321,238,321,233,393,228,476,218,550,201,577,189,595,176,600,165,595,153,564,119,526,90,484,68,439,51,394,38,348,30,266,22"/>
+<area shape="rect" id="Node000004" href="$MazeMap_8hpp.html" title="Estruturas e classe para representação de um labirinto em grade." alt="" coords="125,152,238,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,31,184,138,179,138,179,31"/>
+<area shape="rect" id="Node000006" href="$Planner_8hpp.html" title="Planejador de caminho em grade usando BFS sobre MazeMap." alt="" coords="227,79,325,104"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="198,29,251,68,248,72,195,33"/>
+<area shape="rect" id="Node000010" href="$Learning_8hpp.html" title="Estruturas e utilitários de heurística/aprendizado simples." alt="" coords="29,79,136,104"/>
+<area shape="poly" id="edge14_Node000001_Node000010" title=" " alt="" coords="167,33,111,73,108,68,164,29"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="163,180,94,220,92,216,161,175"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="198,175,251,215,248,219,195,179"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="152,225,211,251"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="184,178,184,212,179,212,179,178"/>
+<area shape="poly" id="edge12_Node000006_Node000002" title=" " alt="" coords="227,104,170,122,141,136,115,154,90,183,73,214,68,212,86,180,112,150,139,132,168,117,226,99"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="279,104,279,212,273,212,273,104"/>
+<area shape="poly" id="edge13_Node000006_Node000004" title=" " alt="" coords="262,106,209,146,206,141,259,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="500,152,585,177"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="320,101,487,146,486,151,318,107"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="314,152,377,177"/>
+<area shape="poly" id="edge10_Node000006_Node000008" title=" " alt="" coords="289,102,327,140,323,144,286,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="401,152,476,177"/>
+<area shape="poly" id="edge11_Node000006_Node000009" title=" " alt="" coords="303,102,401,144,398,149,301,106"/>
+<area shape="poly" id="edge15_Node000010_Node000002" title=" " alt="" coords="82,105,71,152,65,212,60,211,65,152,77,104"/>
 </map>

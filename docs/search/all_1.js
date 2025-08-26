@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['back_0',['Back',['../namespacemaze.html#a389a050a3cd17fb3ad9e9e7e739d0c92a0557fa923dcee4d0f86b1409f5c2167f',1,'maze']]],
-  ['bfs_5fpath_1',['bfs_path',['../classmaze_1_1Planner.html#af7895e0d610d14519092d5584873868e',1,'maze::Planner']]],
-  ['build_20targets_20e_20opções_20cmake_2',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md22',1,'']]]
+  ['1_0',['Versão 0.0.1',['../md_PLAN.html#autotoc_md22',1,'']]],
+  ['1_200_200_201_20a_202025_2008_2025_1',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]]
 ];

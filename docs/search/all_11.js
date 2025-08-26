@@ -1,4 +1,29 @@
 var searchData=
 [
-  ['update_5fheuristic_0',['update_heuristic',['../namespacemaze.html#aea82179c4246ec49f4b3005f8257c253',1,'maze']]]
+  ['mão_20direita_20right_20hand_0',['Regra da Mão Direita (Right-Hand)',['../md_STRATEGIA.html#autotoc_md40',1,'']]],
+  ['métricas_20de_20sucesso_1',['Métricas de Sucesso',['../md_PLAN.html#autotoc_md29',1,'']]],
+  ['mínimo_20trechos_2',['Template mínimo (trechos)',['../md_MotorControl__Implementations.html#autotoc_md70',1,'']]],
+  ['macros_20cfg_5f_3',['Parametrização (macros CFG_*)',['../index.html#autotoc_md10',1,'']]],
+  ['macros_20exemplos_4',['Configuração por Macros (exemplos)',['../md_PLAN.html#autotoc_md28',1,'']]],
+  ['main_5',['main',['../simulator_2main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;main.cpp'],['../firmware_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;main.cpp']]],
+  ['main_2ecpp_6',['main.cpp',['../firmware_2main_8cpp.html',1,'(Global Namespace)'],['../simulator_2main_8cpp.html',1,'(Global Namespace)']]],
+  ['manutenção_7',['Notas de Manutenção',['../md_PLAN.html#autotoc_md30',1,'']]],
+  ['map_8',['map',['../classmaze_1_1Navigator.html#a11fc4d6572a731670804a9c27b59a2c3',1,'maze::Navigator::map() const'],['../classmaze_1_1Navigator.html#a81df39003854df0b916b685e98a7c97c',1,'maze::Navigator::map()']]],
+  ['mapa_9',['Observação de Paredes e Atualização do Mapa',['../md_STRATEGIA.html#autotoc_md41',1,'']]],
+  ['mapa_20a_20partir_20de_20sensores_10',['Atualização do mapa a partir de sensores',['../md_NAVIGATOR.html#autotoc_md51',1,'']]],
+  ['maze_11',['maze',['../namespacemaze.html',1,'']]],
+  ['maze_20solver_12',['RP2040 Maze Solver',['../index.html',1,'']]],
+  ['maze_20solver_20–_20plano_20e_20requisitos_13',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]],
+  ['maze_5fsolver_5frp2040_20releases_20tag_20v0_200_201_200_200_201_20a_202025_2008_2025_14',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]],
+  ['maze_5fsolver_5frp2040_20releases_20tag_20v0_200_202_200_200_202_20a_202025_2008_2026_15',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]],
+  ['mazemap_16',['mazemap',['../classmaze_1_1MazeMap.html#aa15def648ff7c86394679398751c5788',1,'maze::MazeMap::MazeMap()'],['../classmaze_1_1MazeMap.html',1,'maze::MazeMap']]],
+  ['mazemap_2ehpp_17',['MazeMap.hpp',['../MazeMap_8hpp.html',1,'']]],
+  ['metainfo_18',['MetaInfo',['../structMetaInfo.html',1,'']]],
+  ['motorcontrol_19',['motorcontrol',['../classhal_1_1MotorControl.html#a6472acd6bcd1d9650936dae3038d40ba',1,'hal::MotorControl::MotorControl()'],['../classhal_1_1MotorControl.html',1,'hal::MotorControl']]],
+  ['motorcontrol_2ehpp_20',['MotorControl.hpp',['../MotorControl_8hpp.html',1,'']]],
+  ['motorcontrol_3a_20como_20criar_20uma_20nova_20implementação_20ex_20_3a_20i2c_21',['MotorControl: Como criar uma nova implementação (ex.: I2C)',['../md_MotorControl__Implementations.html',1,'']]],
+  ['motorcontrol_5fhbridge_2ecpp_22',['MotorControl_HBridge.cpp',['../MotorControl__HBridge_8cpp.html',1,'']]],
+  ['motorcontrol_5fimplementations_2emd_23',['MotorControl_Implementations.md',['../MotorControl__Implementations_8md.html',1,'']]],
+  ['motors_24',['motors',['../structControlContext.html#a3109d971b932318c4307284303fde85e',1,'ControlContext']]],
+  ['moved_25',['moved',['../structStepLogEntry.html#aef7ad83d61f6311bb3d69f3334a02f38',1,'StepLogEntry']]]
 ];

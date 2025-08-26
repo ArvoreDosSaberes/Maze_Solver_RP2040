@@ -1,4 +1,28 @@
 var searchData=
 [
-  ['–_20plano_20e_20requisitos_0',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]]
+  ['readall_0',['readAll',['../classhal_1_1IRSensorArray.html#a67877d7b2ded0c15df3f6a5264ddc464',1,'hal::IRSensorArray']]],
+  ['readme_2emd_1',['README.md',['../README_8md.html',1,'']]],
+  ['rect_2',['rect',['../structUIButton.html#ac04377e89701c7e6c2bbaa38f2bc29c1',1,'UIButton']]],
+  ['recursos_20do_20simulador_20ui_20json_20e_20seleção_3',['Recursos do simulador (UI, JSON e seleção)',['../index.html#autotoc_md6',1,'']]],
+  ['referências_20do_20projeto_4',['Referências do Projeto',['../md_REFERENCE.html',1,'']]],
+  ['reference_2emd_5',['REFERENCE.md',['../REFERENCE_8md.html',1,'']]],
+  ['reforço_6',['Heurísticas e Reforço',['../md_STRATEGIA.html#autotoc_md44',1,'']]],
+  ['reforço_20simples_20on_20line_7',['Aprendizado por reforço simples (on-line)',['../md_NAVIGATOR.html#autotoc_md53',1,'']]],
+  ['regra_20da_20mão_20direita_20right_20hand_8',['Regra da Mão Direita (Right-Hand)',['../md_STRATEGIA.html#autotoc_md40',1,'']]],
+  ['relacionado_9',['Relacionado',['../md_STRATEGIA.html#autotoc_md48',1,'']]],
+  ['relativas_10',['Conversão entre Direções Absolutas e Relativas',['../md_STRATEGIA.html#autotoc_md45',1,'']]],
+  ['releases_20tag_20v0_200_201_200_200_201_20a_202025_2008_2025_11',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1&quot; &gt;0.0.1&lt;/a&gt; - 2025-08-25',['../md_CHANGELOG.html#autotoc_md77',1,'']]],
+  ['releases_20tag_20v0_200_202_200_200_202_20a_202025_2008_2026_12',['&lt;a href=&quot;https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2&quot; &gt;0.0.2&lt;/a&gt; - 2025-08-26',['../md_CHANGELOG.html#autotoc_md72',1,'']]],
+  ['requisitos_13',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]],
+  ['requisitos_20funcionais_14',['Requisitos Funcionais',['../md_PLAN.html#autotoc_md18',1,'']]],
+  ['requisitos_20host_15',['Pré-requisitos (host)',['../index.html#autotoc_md2',1,'']]],
+  ['requisitos_20não_20funcionais_16',['Requisitos Não Funcionais',['../md_PLAN.html#autotoc_md19',1,'']]],
+  ['right_17',['right',['../structhal_1_1IRValues.html#ad80e5ef8f68155baca23dd237bb74a48',1,'hal::IRValues::right'],['../namespacemaze.html#a389a050a3cd17fb3ad9e9e7e739d0c92a92b09c7c48c520c3c55e497875da437c',1,'maze::Right']]],
+  ['right_20hand_18',['Regra da Mão Direita (Right-Hand)',['../md_STRATEGIA.html#autotoc_md40',1,'']]],
+  ['right_5ffree_19',['right_free',['../structmaze_1_1SensorRead.html#af11a78f890884adf8c62a5abc33c979b',1,'maze::SensorRead']]],
+  ['righthand_20',['RightHand',['../classmaze_1_1Navigator.html#a339c18934d511c789e6e56ca30e7b018aa51983e0f69f76a68e55efe2e7b700b5',1,'maze::Navigator']]],
+  ['roadmap_20sugerido_21',['Roadmap sugerido',['../md_SIMULATOR.html#autotoc_md67',1,'']]],
+  ['rp2040_22',['rp2040',['../index.html#autotoc_md8',1,'Compilar o firmware (RP2040)'],['../index.html#autotoc_md9',1,'Persistência (host e RP2040)']]],
+  ['rp2040_20maze_20solver_23',['RP2040 Maze Solver',['../index.html',1,'']]],
+  ['rp2040_20maze_20solver_20–_20plano_20e_20requisitos_24',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]]
 ];

@@ -17,5 +17,10 @@ var annotated_dup =
       [ "Point", "structmaze_1_1Point.html", "structmaze_1_1Point" ],
       [ "SensorRead", "structmaze_1_1SensorRead.html", "structmaze_1_1SensorRead" ]
     ] ],
-    [ "ControlContext", "structControlContext.html", "structControlContext" ]
+    [ "ControlContext", "structControlContext.html", "structControlContext" ],
+    [ "LogLine", "structLogLine.html", "structLogLine" ],
+    [ "MetaInfo", "structMetaInfo.html", "structMetaInfo" ],
+    [ "StepLogEntry", "structStepLogEntry.html", "structStepLogEntry" ],
+    [ "UIButton", "structUIButton.html", "structUIButton" ],
+    [ "UIFont", "structUIFont.html", "structUIFont" ]
 ];

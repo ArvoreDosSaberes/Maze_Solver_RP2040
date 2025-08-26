@@ -124,6 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a50e819c7cb34a87714c976fb0d6af6b6" id="r_a50e819c7cb34a87714c976fb0d6af6b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1MazeMap.html#a50e819c7cb34a87714c976fb0d6af6b6">set_wall</a> (int x, int y, char dir, bool present)</td></tr>
 <tr class="memdesc:a50e819c7cb34a87714c976fb0d6af6b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define parede bidirecional entre (x,y) e seu vizinho na direção dada.  <br /></td></tr>
 <tr class="separator:a50e819c7cb34a87714c976fb0d6af6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6182e51e260bb7af9aae0fe915928e8" id="r_af6182e51e260bb7af9aae0fe915928e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaze_1_1MazeMap.html#af6182e51e260bb7af9aae0fe915928e8">to_string_ascii</a> () const</td></tr>
+<tr class="memdesc:af6182e51e260bb7af9aae0fe915928e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gera uma representação ASCII do labirinto.  <br /></td></tr>
+<tr class="separator:af6182e51e260bb7af9aae0fe915928e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Mapa de labirinto em grade (largura x altura) com acesso a paredes. </p>
@@ -371,6 +374,36 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af6182e51e260bb7af9aae0fe915928e8" name="af6182e51e260bb7af9aae0fe915928e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6182e51e260bb7af9aae0fe915928e8">&#9670;&#160;</a></span>to_string_ascii()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string maze::MazeMap::to_string_ascii </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gera uma representação ASCII do labirinto. </p>
+<p>Exemplo de saída (células com paredes externas): +&ndash;+&ndash;+ | |</p><ul>
+<li>+&ndash;+ | | +&ndash;+&ndash;+ </li>
+</ul>
 
 </div>
 </div>

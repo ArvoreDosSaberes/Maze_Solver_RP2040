@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['front_0',['front',['../structhal_1_1IRValues.html#a5623f82120e7c26d92fe8005f385ff9d',1,'hal::IRValues']]],
-  ['front_5ffree_1',['front_free',['../structmaze_1_1SensorRead.html#ac3b5f401e2aad7866faf99cd4ab108a0',1,'maze::SensorRead']]]
+  ['date_0',['date',['../structMetaInfo.html#aba2943039d50e969620d8fc81e371652',1,'MetaInfo']]],
+  ['delta_5fscore_1',['delta_score',['../structStepLogEntry.html#ac0e53de8b7dbd1c1fe9e6068c2a56457',1,'StepLogEntry']]]
 ];

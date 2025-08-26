@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['implementados_0',['Itens Implementados',['../md_PLAN.html#autotoc_md19',1,'']]],
-  ['in_5fbounds_1',['in_bounds',['../classmaze_1_1MazeMap.html#a1d99a898e05f53589d8c2c49ca961def',1,'maze::MazeMap']]],
-  ['irsensorarray_2',['irsensorarray',['../classhal_1_1IRSensorArray.html',1,'hal::IRSensorArray'],['../classhal_1_1IRSensorArray.html#ae0a21d778f5f66e0761b4b80f15682e5',1,'hal::IRSensorArray::IRSensorArray()']]],
-  ['irsensorarray_2ecpp_3',['IRSensorArray.cpp',['../IRSensorArray_8cpp.html',1,'']]],
-  ['irsensorarray_2ehpp_4',['IRSensorArray.hpp',['../IRSensorArray_8hpp.html',1,'']]],
-  ['irvalues_5',['IRValues',['../structhal_1_1IRValues.html',1,'hal']]],
-  ['itens_20implementados_6',['Itens Implementados',['../md_PLAN.html#autotoc_md19',1,'']]]
+  ['back_0',['Back',['../namespacemaze.html#a389a050a3cd17fb3ad9e9e7e739d0c92a0557fa923dcee4d0f86b1409f5c2167f',1,'maze']]],
+  ['bfs_1',['Planejamento (BFS)',['../md_STRATEGIA.html#autotoc_md42',1,'']]],
+  ['bfs_5fpath_2',['bfs_path',['../classmaze_1_1Planner.html#af7895e0d610d14519092d5584873868e',1,'maze::Planner']]],
+  ['build_20targets_20e_20opções_20cmake_3',['Build Targets e Opções (CMake)',['../md_PLAN.html#autotoc_md26',1,'']]],
+  ['busca_20da_20saída_4',['Estratégia de Navegação e Busca da Saída',['../md_STRATEGIA.html',1,'']]]
 ];

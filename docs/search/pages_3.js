@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['plano_20e_20requisitos_0',['RP2040 Maze Solver – Plano e Requisitos',['../md_PLAN.html',1,'']]],
-  ['projeto_1',['Referências do Projeto',['../md_REFERENCE.html',1,'']]]
+  ['da_20saída_0',['Estratégia de Navegação e Busca da Saída',['../md_STRATEGIA.html',1,'']]],
+  ['de_20navegação_20e_20busca_20da_20saída_1',['Estratégia de Navegação e Busca da Saída',['../md_STRATEGIA.html',1,'']]],
+  ['do_20projeto_2',['Referências do Projeto',['../md_REFERENCE.html',1,'']]]
 ];

@@ -6,5 +6,6 @@ var classmaze_1_1MazeMap =
     [ "height", "classmaze_1_1MazeMap.html#a219febfa86d56972e0aa8b541bca7272", null ],
     [ "in_bounds", "classmaze_1_1MazeMap.html#a1d99a898e05f53589d8c2c49ca961def", null ],
     [ "set_wall", "classmaze_1_1MazeMap.html#a50e819c7cb34a87714c976fb0d6af6b6", null ],
+    [ "to_string_ascii", "classmaze_1_1MazeMap.html#af6182e51e260bb7af9aae0fe915928e8", null ],
     [ "width", "classmaze_1_1MazeMap.html#aba61dcfa7f589ff8a54a2c97733eb70c", null ]
 ];

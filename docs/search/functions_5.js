@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['in_5fbounds_0',['in_bounds',['../classmaze_1_1MazeMap.html#a1d99a898e05f53589d8c2c49ca961def',1,'maze::MazeMap']]],
-  ['irsensorarray_1',['IRSensorArray',['../classhal_1_1IRSensorArray.html#ae0a21d778f5f66e0761b4b80f15682e5',1,'hal::IRSensorArray']]]
+  ['hasplan_0',['hasPlan',['../classmaze_1_1Navigator.html#ab2a78c95f6ed0fe143f373ccfb9e6e9a',1,'maze::Navigator']]],
+  ['height_1',['height',['../classmaze_1_1MazeMap.html#a219febfa86d56972e0aa8b541bca7272',1,'maze::MazeMap']]],
+  ['heuristics_2',['heuristics',['../classmaze_1_1Navigator.html#a2ef4c32d510454c09cc7f71a6ea5effd',1,'maze::Navigator']]]
 ];
