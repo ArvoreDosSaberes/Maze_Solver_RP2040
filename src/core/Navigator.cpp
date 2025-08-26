@@ -77,6 +77,11 @@ void Navigator::observeCellWalls(Point cell, const SensorRead& sr, uint8_t headi
     set_dir(rel_to_abs(0), sr.left_free);
     set_dir(rel_to_abs(1), sr.front_free);
     set_dir(rel_to_abs(2), sr.right_free);
+    // marca visita da célula atual
+    if (!seen_.empty() && map_.in_bounds(cell.x, cell.y)) {
+        int id = idx(cell.x, cell.y);
+        if (id >= 0 && id < (int)seen_.size() && seen_[id] < 255) seen_[id]++;
+    }
 }
 
 /**
@@ -108,43 +113,68 @@ bool Navigator::planRoute() {
  * @return decisão planejada (pontuação alta), ou heurística caso não aplicável
  */
 Decision Navigator::decidePlanned(Point current, uint8_t heading, const SensorRead& sr) {
-    if (!plan_.empty()) {
-        // Find current index in plan
+    // Helper: absolute move wanted by plan from current -> next
+    auto plan_wanted_abs = [&]() -> char {
+        if (plan_.empty()) return 'X';
         auto it = std::find_if(plan_.begin(), plan_.end(), [&](const Point& pt){ return pt.x==current.x && pt.y==current.y; });
-        if (it != plan_.end()) {
-            if (std::next(it) != plan_.end()) {
-                Point next = *std::next(it);
-                // Determine absolute desired move dir
-                char want;
-                if (next.x == current.x && next.y == current.y-1) want = 'N';
-                else if (next.x == current.x+1 && next.y == current.y) want = 'E';
-                else if (next.x == current.x && next.y == current.y+1) want = 'S';
-                else if (next.x == current.x-1 && next.y == current.y) want = 'W';
-                else want = 'X';
+        if (it == plan_.end() || std::next(it) == plan_.end()) return 'X';
+        Point next = *std::next(it);
+        if (next.x == current.x && next.y == current.y-1) return 'N';
+        if (next.x == current.x+1 && next.y == current.y) return 'E';
+        if (next.x == current.x && next.y == current.y+1) return 'S';
+        if (next.x == current.x-1 && next.y == current.y) return 'W';
+        return 'X';
+    }();
 
-                // Map absolute desired dir to relative action given heading
-                auto to_rel = [&](char abs){
-                    const char abs_dirs[4] = {'N','E','S','W'};
-                    int base = (int)heading; // front abs index
-                    int idx = -1;
-                    for (int i=0;i<4;++i) if (abs_dirs[i]==abs) { idx=i; break; }
-                    if (idx<0) return Action::Back; // unknown
-                    // Compute relative: 0=Front,1=Right,2=Back,3=Left
-                    int rel = (idx - base + 4) & 3;
-                    if (rel==0) return Action::Forward;
-                    if (rel==1) return Action::Right;
-                    if (rel==3) return Action::Left;
-                    return Action::Back;
-                };
-                if (want!='X') {
-                    Action a = to_rel(want);
-                    Decision d; d.action = a; d.score = 9; return d;
-                }
-            }
-        }
+    const char abs_dirs[4] = {'N','E','S','W'};
+    auto rel_to_abs = [&](int rel){ // 0=Left,1=Front,2=Right
+        int base = (int)heading;
+        int d = (rel==0) ? (base + 3) & 3 : (rel==1) ? base : (base + 1) & 3;
+        return abs_dirs[d];
+    };
+    auto abs_to_rel_action = [&](char abs){
+        int base = (int)heading;
+        int idx_dir = 0; for (int i=0;i<4;++i) if (abs_dirs[i]==abs) { idx_dir=i; break; }
+        int rel = (idx_dir - base + 4) & 3; // 0=Front,1=Right,2=Back,3=Left
+        if (rel==0) return Action::Forward;
+        if (rel==1) return Action::Right;
+        if (rel==3) return Action::Left;
+        return Action::Back;
+    };
+
+    struct Cand { Action a; int seen; bool matches_plan; };
+    std::vector<Cand> cands;
+    cands.reserve(3);
+
+    // For each of Left, Front, Right if free, compute target and seen count
+    auto push_cand = [&](int rel, bool free_flag){
+        if (!free_flag) return;
+        char abs = rel_to_abs(rel);
+        int nx = current.x, ny = current.y;
+        if (abs=='N') ny--; else if (abs=='E') nx++; else if (abs=='S') ny++; else if (abs=='W') nx--;
+        int s = 255;
+        if (!seen_.empty() && map_.in_bounds(nx,ny)) s = seen_[idx(nx,ny)];
+        cands.push_back(Cand{ rel==0?Action::Left : rel==1?Action::Forward : Action::Right, s, (abs==plan_wanted_abs) });
+    };
+    push_cand(0, sr.left_free);
+    push_cand(1, sr.front_free);
+    push_cand(2, sr.right_free);
+
+    if (!cands.empty()) {
+        // Prefer unseen (seen==0), else least seen; tie-break by plan match, then heuristic score
+        std::stable_sort(cands.begin(), cands.end(), [&](const Cand& a, const Cand& b){
+            bool au = (a.seen==0), bu = (b.seen==0);
+            if (au!=bu) return au; // unseen first
+            if (a.seen != b.seen) return a.seen < b.seen; // least seen first
+            if (a.matches_plan != b.matches_plan) return a.matches_plan; // prefer plan alignment
+            // fallback to heuristic score_for
+            return score_for(a.a, sr) > score_for(b.a, sr);
+        });
+        Decision d; d.action = cands.front().a; d.score = score_for(d.action, sr); return d;
     }
-    // Fallback: original RightHand logic
-    return decide(sr);
+
+    // No left/front/right free: must go back
+    Decision d; d.action = Action::Back; d.score = score_for(d.action, sr); return d;
 }
 
 /**

@@ -35,6 +35,7 @@
 #include <iostream>
 #include <cctype>
 #include <cstdlib>
+#include <iomanip>
 #include "core/MazeMap.hpp"
 #include "core/Navigator.hpp"
 
@@ -63,7 +64,6 @@ static void carve_between(MazeMap& m, int x1, int y1, int x2, int y2) {
     else if (x2 == x1 && y2 == y1+1) { m.set_wall(x1,y1,'S',false); }
     else if (x2 == x1-1 && y2 == y1) { m.set_wall(x1,y1,'W',false); }
 }
-
 // --- JSON e utilitários de filesystem ---
 // Formato salvo:
 // {
@@ -250,6 +250,208 @@ static bool save_maze_json(const fs::path& file, const MazeMap& m, Point entranc
     return true;
 }
 
+// --- Solution JSON helpers (versioned per map file) ---
+static fs::path make_solution_path(const fs::path& mapFile, int index) {
+    fs::path dir = mapFile.parent_path();
+    std::string stem = mapFile.stem().string();
+    std::ostringstream oss;
+    oss << stem << "_solution_" << index << ".soluct";
+    return dir / oss.str();
+}
+
+static bool read_text_file(const fs::path& p, std::string& out) {
+    std::ifstream ifs(p);
+    if (!ifs) return false;
+    std::ostringstream ss; ss << ifs.rdbuf();
+    out = ss.str();
+    return true;
+}
+
+static std::string build_solution_json(const fs::path& mapFile, int W, int H, Point entrance, Point goal, uint8_t heading,
+                                       const std::vector<Point>& path, int steps, int collisions, float time_s, int cost,
+                                       const MetaInfo& meta) {
+    std::ostringstream ofs;
+    ofs << "{\n";
+    ofs << "  \"map_file\": \"" << escape_json(mapFile.string()) << "\",\n";
+    ofs << "  \"width\": " << W << ", \"height\": " << H << ",\n";
+    ofs << "  \"entrance\": {\"x\": " << entrance.x << ", \"y\": " << entrance.y << ", \"heading\": " << (int)heading << "},\n";
+    ofs << "  \"goal\": {\"x\": " << goal.x << ", \"y\": " << goal.y << "},\n";
+    ofs << "  \"metrics\": {\n";
+    ofs << "    \"steps\": " << steps << ",\n";
+    ofs << "    \"collisions\": " << collisions << ",\n";
+    ofs << "    \"time_s\": " << std::fixed << std::setprecision(2) << time_s << ",\n";
+    ofs << "    \"cost\": " << cost << "\n";
+    ofs << "  },\n";
+    ofs << "  \"path\": [\n";
+    for (size_t i=0; i<path.size(); ++i) {
+        ofs << "    {\"x\": " << path[i].x << ", \"y\": " << path[i].y << "}";
+        if (i+1<path.size()) ofs << ",";
+        ofs << "\n";
+    }
+    ofs << "  ],\n";
+    ofs << "  \"meta\": {\n";
+    ofs << "    \"name\": \"" << escape_json(meta.name) << "\",\n";
+    ofs << "    \"email\": \"" << escape_json(meta.email) << "\",\n";
+    ofs << "    \"github\": \"" << escape_json(meta.github) << "\",\n";
+    ofs << "    \"date\": \"" << escape_json(meta.date) << "\"\n";
+    ofs << "  }\n";
+    ofs << "}\n";
+    return ofs.str();
+}
+
+static int find_latest_solution_index(const fs::path& mapFile) {
+    int best = 0;
+    fs::path dir = mapFile.parent_path();
+    std::string stem = mapFile.stem().string();
+    try {
+        if (fs::exists(dir) && fs::is_directory(dir)) {
+            for (auto& e : fs::directory_iterator(dir)) {
+                if (!e.is_regular_file()) continue;
+                auto p = e.path();
+                if (p.extension() != ".soluct") continue;
+                std::string fname = p.filename().string();
+                std::string prefix = stem + "_solution_";
+                if (fname.rfind(prefix, 0) == 0) {
+                    // extract number before .json
+                    size_t start = prefix.size();
+                    size_t end = fname.find('.');
+                    if (end != std::string::npos && end > start) {
+                        std::string num = fname.substr(start, end - start);
+                        int idx = std::atoi(num.c_str());
+                        if (idx > best) best = idx;
+                    }
+                }
+            }
+        }
+    } catch (...) {}
+    return best;
+}
+
+static fs::path save_solution_versioned(const fs::path& mapFile, const std::string& content) {
+    int latest = find_latest_solution_index(mapFile);
+    if (latest > 0) {
+        fs::path lastFile = make_solution_path(mapFile, latest);
+        std::string prev;
+        if (read_text_file(lastFile, prev)) {
+            if (prev == content) {
+                return lastFile; // unchanged; do not create new version
+            }
+        }
+    }
+    int next = latest + 1;
+    fs::path out = make_solution_path(mapFile, next);
+    std::ofstream ofs(out);
+    if (ofs) {
+        ofs << content;
+        ofs.close();
+    }
+    return out;
+}
+
+// --- Attempt plan log helpers (.plan, JSON content) ---
+struct StepLogEntry {
+    Point from;
+    Point to;
+    uint8_t heading_before{0};
+    maze::Action action{maze::Action::Forward};
+    bool moved{false};
+    const char* event{nullptr}; // "forward" | "collision" | "left" | "right" | "back"
+    double delta_score{0.0};
+    double score_after{0.0};
+    int step_index{0};
+    int collisions{0};
+};
+
+static std::string action_to_str(maze::Action a) {
+    switch (a) {
+        case maze::Action::Left: return "Left";
+        case maze::Action::Right: return "Right";
+        case maze::Action::Back: return "Back";
+        case maze::Action::Forward: default: return "Forward";
+    }
+}
+
+static std::string build_plan_json(const fs::path& mapFile, int W, int H, Point start, Point goal, uint8_t heading,
+                                   const std::vector<StepLogEntry>& steps, const char* result,
+                                   int total_steps, int total_collisions, double final_score, const MetaInfo& meta) {
+    std::ostringstream ofs;
+    ofs << "{\n";
+    ofs << "  \"map_file\": \"" << escape_json(mapFile.string()) << "\",\n";
+    ofs << "  \"width\": " << W << ", \"height\": " << H << ",\n";
+    ofs << "  \"start\": {\"x\": " << start.x << ", \"y\": " << start.y << ", \"heading\": " << (int)heading << "},\n";
+    ofs << "  \"goal\": {\"x\": " << goal.x << ", \"y\": " << goal.y << "},\n";
+    ofs << "  \"result\": \"" << escape_json(result ? result : "unknown") << "\",\n";
+    ofs << "  \"summary\": { \"steps\": " << total_steps << ", \"collisions\": " << total_collisions << ", \"score\": " << std::fixed << std::setprecision(2) << final_score << " },\n";
+    ofs << "  \"attempt\": [\n";
+    for (size_t i=0; i<steps.size(); ++i) {
+        const auto& s = steps[i];
+        ofs << "    {\"i\": " << s.step_index
+            << ", \"from\": {\"x\": " << s.from.x << ", \"y\": " << s.from.y << "}"
+            << ", \"to\": {\"x\": " << s.to.x << ", \"y\": " << s.to.y << "}"
+            << ", \"heading\": " << (int)s.heading_before
+            << ", \"action\": \"" << action_to_str(s.action) << "\""
+            << ", \"moved\": " << (s.moved?"true":"false")
+            << ", \"event\": \"" << (s.event? s.event: "") << "\""
+            << ", \"delta_score\": " << std::fixed << std::setprecision(2) << s.delta_score
+            << ", \"score_after\": " << std::fixed << std::setprecision(2) << s.score_after
+            << ", \"collisions\": " << s.collisions
+            << " }";
+        if (i+1<steps.size()) ofs << ",";
+        ofs << "\n";
+    }
+    ofs << "  ],\n";
+    ofs << "  \"meta\": {\n";
+    ofs << "    \"name\": \"" << escape_json(meta.name) << "\",\n";
+    ofs << "    \"email\": \"" << escape_json(meta.email) << "\",\n";
+    ofs << "    \"github\": \"" << escape_json(meta.github) << "\",\n";
+    ofs << "    \"date\": \"" << escape_json(meta.date) << "\"\n";
+    ofs << "  }\n";
+    ofs << "}\n";
+    return ofs.str();
+}
+
+static fs::path make_plan_path(const fs::path& mapFile, int index) {
+    fs::path dir = mapFile.parent_path();
+    std::string stem = mapFile.stem().string();
+    std::ostringstream oss; oss << stem << "_plan_" << index << ".plan";
+    return dir / oss.str();
+}
+
+static int find_latest_plan_index(const fs::path& mapFile) {
+    int best = 0;
+    fs::path dir = mapFile.parent_path();
+    std::string stem = mapFile.stem().string();
+    try {
+        if (fs::exists(dir) && fs::is_directory(dir)) {
+            for (auto& e : fs::directory_iterator(dir)) {
+                if (!e.is_regular_file()) continue;
+                auto p = e.path();
+                if (p.extension() != ".plan") continue;
+                std::string fname = p.filename().string();
+                std::string prefix = stem + "_plan_";
+                if (fname.rfind(prefix, 0) == 0) {
+                    size_t start = prefix.size();
+                    size_t end = fname.find('.');
+                    if (end != std::string::npos && end > start) {
+                        std::string num = fname.substr(start, end - start);
+                        int idx = std::atoi(num.c_str());
+                        if (idx > best) best = idx;
+                    }
+                }
+            }
+        }
+    } catch (...) {}
+    return best;
+}
+
+static fs::path save_plan_versioned(const fs::path& mapFile, const std::string& content) {
+    int next = find_latest_plan_index(mapFile) + 1;
+    fs::path out = make_plan_path(mapFile, next);
+    std::ofstream ofs(out);
+    if (ofs) { ofs << content; ofs.close(); }
+    return out;
+}
+
 // Parser muito simples, assume JSON bem formado vindo do nosso save
 static bool load_maze_json(const fs::path& file, MazeMap& m, Point& entrance, Point& goal, uint8_t& heading) {
     std::ifstream ifs(file);
@@ -319,7 +521,7 @@ static std::vector<fs::path> list_maze_files() {
             for (auto& e : fs::directory_iterator("maze")) {
                 if (e.is_regular_file()) {
                     auto p = e.path();
-                    if (p.extension()==".json") out.push_back(p);
+                    if (p.extension()==".maze") out.push_back(p); // only list .maze maps
                 }
             }
             std::sort(out.begin(), out.end());
@@ -640,6 +842,23 @@ static void draw_agent(SDL_Renderer* ren, Point p, int heading, int ox, int oy, 
 }
 
 /**
+ * @brief Desenha as células visitadas como retângulos translúcidos.
+ */
+// trail_state: 0=none, 1=current/right path (green), 2=backtracked/wrong (yellow)
+static void draw_trail(SDL_Renderer* ren, const std::vector<uint8_t>& trail, int w, int h, int ox, int oy, int cell) {
+    SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
+    for (int y=0; y<h; ++y) {
+        for (int x=0; x<w; ++x) {
+            uint8_t s = trail[y*w + x]; if (!s) continue;
+            if (s == 1) SDL_SetRenderDrawColor(ren, 0, 220, 0, 90);        // green
+            else        SDL_SetRenderDrawColor(ren, 255, 215, 0, 140);     // yellow
+            SDL_Rect r{ ox + x*cell + 4, oy + y*cell + 4, cell - 8, cell - 8 };
+            SDL_RenderFillRect(ren, &r);
+        }
+    }
+}
+
+/**
  * @brief Ponto de entrada do simulador 2D com SDL2.
  *
  * Inicializa SDL2, constrói um mapa de exemplo, configura o `maze::Navigator` e
@@ -695,6 +914,7 @@ int main(int argc, char** argv) {
     bool choosing = true;
     int W = 16, H = 12; // padrão; pode ser sobrescrito por arquivo
     MazeMap map(W, H);
+    fs::path current_map_file; // caminho do arquivo do mapa atual
     Point entrance{}, goal_cell{};
     uint8_t entrance_heading = 1;
 
@@ -716,13 +936,15 @@ int main(int argc, char** argv) {
                         ensure_session_meta(ren, font, win_w, win_h);
                         MetaInfo mi = collect_meta_default();
                         char fname[128];
-                        std::snprintf(fname, sizeof(fname), "maze_%dx%d_%ld.json", W, H, (long)std::time(nullptr));
+                        std::snprintf(fname, sizeof(fname), "maze_%dx%d_%ld.maze", W, H, (long)std::time(nullptr));
                         fs::path out = fs::path("maze") / fname;
                         if (!save_maze_json(out, map, entrance, goal_cell, entrance_heading, mi)) {
                             std::fprintf(stderr, "Falha ao salvar %s\n", out.string().c_str());
                         } else {
                             std::printf("Salvo: %s\n", out.string().c_str());
                         }
+                        current_map_file = out;
+                        step_log.clear();
                     } else {
                         // Carrega arquivo
                         fs::path f = files[sel-1];
@@ -733,6 +955,7 @@ int main(int argc, char** argv) {
                         } else {
                             W = map.width(); H = map.height();
                         }
+                        current_map_file = f;
                     }
                     choosing = false;
                 }
@@ -774,18 +997,18 @@ int main(int argc, char** argv) {
     Point start = entrance;
     Point goal = goal_cell;
     nav.setStartGoal(start, goal);
-    // Copia o mapa real gerado para o mapa interno do Navigator (para o BFS conhecer as paredes reais)
-    nav.map() = map;
     Point agent = start;
     uint8_t heading = entrance_heading;
-    nav.planRoute();
+    // Não pré-planejar: aprendizado/descoberta ocorrerá passo-a-passo via observeCellWalls()
 
     Uint32 start_ms = SDL_GetTicks();
     Uint32 frozen_ms = 0;
     bool time_frozen = false;
     Uint32 last_step = start_ms;
+    bool started = false; // começa a contar somente quando houver o primeiro movimento
     int steps = 0;
     int collisions = 0;
+    double score = 0.0; // premiações (+) e penalidades (-)
     bool running = true;
     bool paused = false;
 
@@ -793,6 +1016,15 @@ int main(int argc, char** argv) {
     enum class Phase { Ready, RunningExplore, RunningReplay, FinishedSuccess, FinishedFail };
     Phase phase = Phase::Ready; // after maze loaded/generated
     const int max_steps_fail = W * H * 8;
+
+    // Trail tracking (stack-based)
+    std::vector<uint8_t> trail(W*H, 0); // 0 none, 1 green (current/right), 2 yellow (wrong)
+    std::vector<Point> path_stack;
+    auto idx2 = [&](int x,int y){ return y*W + x; };
+    auto set_green = [&](Point p){ if (p.x>=0 && p.y>=0 && p.x<W && p.y<H) trail[idx2(p.x,p.y)] = 1; };
+    auto set_yellow = [&](Point p){ if (p.x>=0 && p.y>=0 && p.x<W && p.y<H) trail[idx2(p.x,p.y)] = 2; };
+    auto on_start_reset_stack = [&](){ path_stack.clear(); path_stack.push_back(agent); set_green(agent); };
+    on_start_reset_stack();
 
     // Buttons
     UIButton btnStart{ SDL_Rect{ sidebar.x + 20, 60, sidebar_w - 40, 34 }, true, "Iniciar" };
@@ -802,6 +1034,8 @@ int main(int argc, char** argv) {
     std::vector<LogLine> log;
     auto push_log = [&](const std::string& s, SDL_Color c){ log.push_back({s,c}); if (log.size() > 1000) log.erase(log.begin(), log.begin()+500); };
     push_log("Pronto. Selecione Iniciar.", SDL_Color{180,220,180,255});
+    // Per-step attempt log (.plan)
+    std::vector<StepLogEntry> step_log;
     while (running) {
         SDL_Event e; 
         while (SDL_PollEvent(&e)) {
@@ -812,13 +1046,9 @@ int main(int argc, char** argv) {
                 if (e.key.keysym.sym == SDLK_r) {
                     agent = start; heading = entrance_heading; steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks();
                     start_ms = last_step; time_frozen = false; frozen_ms = 0;
-                    nav.setMapDimensions(W, H);
-                    nav.setStartGoal(start, goal);
-                    nav.map() = map;
-                    nav.planRoute();
-                    phase = Phase::Ready;
-                    btnStart.label = "Iniciar"; btnStart.enabled = true;
-                    // btnNew remains enabled at all times after a maze is loaded
+                    std::fill(trail.begin(), trail.end(), 0);
+                    on_start_reset_stack();
+                    step_log.clear();
                     log.clear(); push_log("Resetado.", SDL_Color{200,200,200,255});
                 }
             }
@@ -829,14 +1059,15 @@ int main(int argc, char** argv) {
                     if (phase == Phase::Ready || phase == Phase::FinishedSuccess) {
                         // Start exploration or replay learned path
                         agent = start; heading = entrance_heading; steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks();
-                        start_ms = last_step; time_frozen = false; frozen_ms = 0;
+                        start_ms = last_step; time_frozen = false; frozen_ms = 0; started = false;
                         nav.setMapDimensions(W, H);
                         nav.setStartGoal(start, goal);
-                        nav.map() = map;
-                        nav.planRoute();
+                        // Não copie o mapa real; planejamento ocorrerá apenas após observações
                         phase = (phase==Phase::FinishedSuccess) ? Phase::RunningReplay : Phase::RunningExplore;
                         btnStart.label = "Parar";
                         push_log("Execução iniciada.", SDL_Color{180,220,180,255});
+                        std::fill(trail.begin(), trail.end(), 0); on_start_reset_stack(); score = 0.0;
+                        step_log.clear();
                     } else if (phase == Phase::RunningExplore || phase == Phase::RunningReplay) {
                         paused = true; phase = Phase::Ready; btnStart.label = "Iniciar"; push_log("Execução parada.", SDL_Color{220,180,180,255});
                     } else if (phase == Phase::FinishedFail) {
@@ -845,9 +1076,9 @@ int main(int argc, char** argv) {
                         start_ms = last_step; time_frozen = false; frozen_ms = 0;
                         nav.setMapDimensions(W, H);
                         nav.setStartGoal(start, goal);
-                        nav.map() = map;
-                        nav.planRoute();
                         phase = Phase::RunningExplore; btnStart.label = "Parar"; push_log("Teste reiniciado.", SDL_Color{180,220,180,255});
+                        std::fill(trail.begin(), trail.end(), 0); on_start_reset_stack(); score = 0.0;
+                        step_log.clear();
                     }
                 }
                 if (btnNew.enabled && in_rect(btnNew.rect)) {
@@ -856,7 +1087,7 @@ int main(int argc, char** argv) {
                     ensure_session_meta(ren, font, win_w, win_h);
                     MetaInfo mi = collect_meta_default();
                     char fname[128];
-                    std::snprintf(fname, sizeof(fname), "maze_%dx%d_%ld.json", W, H, (long)std::time(nullptr));
+                    std::snprintf(fname, sizeof(fname), "maze_%dx%d_%ld.maze", W, H, (long)std::time(nullptr));
                     fs::path out = fs::path("maze") / fname;
                     if (!save_maze_json(out, map, entrance, goal_cell, entrance_heading, mi)) {
                         std::fprintf(stderr, "Falha ao salvar %s\n", out.string().c_str());
@@ -864,15 +1095,16 @@ int main(int argc, char** argv) {
                     } else {
                         push_log(std::string("Novo labirinto salvo: ") + out.string(), SDL_Color{180,220,180,255});
                     }
+                    current_map_file = out;
                     start = entrance; goal = goal_cell; agent = start; heading = entrance_heading;
                     nav.setMapDimensions(W, H);
                     nav.setStartGoal(start, goal);
-                    nav.map() = map;
-                    nav.planRoute();
-                    steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks();
+                    steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks(); started = false; time_frozen = false; frozen_ms = 0;
                     phase = Phase::Ready;
                     btnStart.label = "Iniciar"; btnStart.enabled = true;
                     btnNew.enabled = true; // disponível sempre
+                    trail.assign(W*H, 0); on_start_reset_stack(); score = 0.0;
+                    step_log.clear();
                 }
             }
         }
@@ -884,67 +1116,129 @@ int main(int argc, char** argv) {
             maze::SensorRead sr = make_sensor_read(map, agent, heading);
             // opcional: atualizar conhecimento do mapa
             nav.observeCellWalls(agent, sr, heading);
+            // replaneja a cada passo para refletir conhecimento atualizado (mantém movimento simultâneo)
+            nav.planRoute();
             auto dec = nav.decidePlanned(agent, heading, sr);
             // debug: imprime decisão
             std::printf("pos=(%d,%d) head=%u act=%d free[L=%d F=%d R=%d]\n", agent.x, agent.y, heading, (int)dec.action, (int)sr.left_free, (int)sr.front_free, (int)sr.right_free);
             // Check if action would hit a wall when moving forward
             bool moved = false;
+            Point prev = agent;
+            uint8_t heading_before = heading;
+            StepLogEntry ent{}; ent.from = prev; ent.to = prev; ent.heading_before = heading_before; ent.action = dec.action; ent.moved = false; ent.delta_score = 0.0; ent.collisions = collisions;
             if (dec.action == maze::Action::Forward) {
                 const char abs_dirs[4] = {'N','E','S','W'};
                 char absdir = abs_dirs[heading];
                 if (can_move(map, agent, absdir)) {
                     apply_move(agent, heading, dec.action);
                     moved = true;
-                    push_log("FWD: recompensa +1", SDL_Color{150,220,150,255});
+                    // reward for successful forward step
+                    ent.event = "forward"; ent.moved = true; ent.to = agent; ent.delta_score = 1.0;
+                    score += 1.0; push_log("FORWARD: +1.0 (passagem livre)", SDL_Color{180,220,180,255});
                 } else {
-                    // Plano inválido localmente: replaneja e faz fallback heurístico neste passo
                     collisions++;
-                    nav.planRoute();
-                    auto dec2 = nav.decide(sr);
-                    if (dec2.action == maze::Action::Forward) {
-                        absdir = abs_dirs[heading];
-                        if (can_move(map, agent, absdir)) { apply_move(agent, heading, dec2.action); moved = true; }
-                    } else {
-                        apply_move(agent, heading, dec2.action); moved = true;
+                    // Penalize collision
+                    if (phase==Phase::RunningExplore) {
+                        // tentativa: girar à direita para evitar loop
+                        apply_move(agent, heading, maze::Action::Right);
                     }
-                    push_log("COLISÃO: punição -5 (replanejar)", SDL_Color{220,150,150,255});
+                    ent.event = "collision"; ent.moved = false; ent.to = prev; ent.delta_score = -5.0; ent.collisions = collisions;
+                    score -= 5.0; push_log("COLISÃO: -5.0", SDL_Color{220,150,150,255});
                 }
             } else {
                 apply_move(agent, heading, dec.action);
                 moved = true;
-                if (dec.action==maze::Action::Left) push_log("LEFT: custo -0.1", SDL_Color{200,200,150,255});
-                else if (dec.action==maze::Action::Right) push_log("RIGHT: custo -0.1", SDL_Color{200,200,150,255});
-                else if (dec.action==maze::Action::Back) push_log("BACK: custo -0.2", SDL_Color{200,180,150,255});
+                ent.moved = true; ent.to = agent;
+                if (dec.action==maze::Action::Left)  { ent.event = "left";  ent.delta_score = -0.1; score -= 0.1; push_log("LEFT: -0.1", SDL_Color{200,200,150,255}); }
+                else if (dec.action==maze::Action::Right) { ent.event = "right"; ent.delta_score = -0.1; score -= 0.1; push_log("RIGHT: -0.1", SDL_Color{200,200,150,255}); }
+                else if (dec.action==maze::Action::Back)  { ent.event = "back";  ent.delta_score = -0.2; score -= 0.2; push_log("BACK: -0.2", SDL_Color{200,180,150,255}); }
             }
-            if (moved) steps++;
+            // persist per-step entry
+            ent.score_after = score;
+            if (moved) {
+                if (!started) { started = true; start_ms = SDL_GetTicks(); time_frozen = false; }
+                steps++;
+                ent.step_index = steps;
+                ent.collisions = collisions;
+                // Atualiza rastro (pilha): se voltamos para a célula anterior, pop e amarelo; senão push e verde
+                if (path_stack.size() >= 2 && agent.x == path_stack[path_stack.size()-2].x && agent.y == path_stack[path_stack.size()-2].y) {
+                    // backtracked
+                    Point popped = path_stack.back(); path_stack.pop_back(); set_yellow(popped);
+                    set_green(agent); // permanece verde (caminho atual)
+                } else if (path_stack.empty() || agent.x != path_stack.back().x || agent.y != path_stack.back().y) {
+                    path_stack.push_back(agent); set_green(agent);
+                }
+            }
+            else { ent.step_index = steps; }
+            step_log.push_back(ent);
             if (agent.x==goal.x && agent.y==goal.y) {
                 float sim_time_s = (SDL_GetTicks() - start_ms) / 1000.0f;
                 int cost = steps + collisions * 5;
                 std::printf("Reached goal in %d steps, collisions=%d, time=%.2fs, cost=%d\n", steps, collisions, sim_time_s, cost);
+                score += 10.0; push_log("OBJETIVO: +10.0", SDL_Color{180,230,180,255});
+                // Recolorir rastro: manter verde apenas o caminho final (path_stack); o restante vira amarelo
+                std::vector<uint8_t> is_final(W*H, 0);
+                for (auto& p: path_stack) { if (p.x>=0 && p.y>=0 && p.x<W && p.y<H) is_final[p.y*W + p.x] = 1; }
+                for (int y=0; y<H; ++y) {
+                    for (int x=0; x<W; ++x) {
+                        int i = y*W + x;
+                        if (trail[i] == 1 && !is_final[i]) trail[i] = 2; // amarelo
+                    }
+                }
+                for (auto& p: path_stack) set_green(p); // reforça verde do caminho final
                 // Freeze timer on success
-                frozen_ms = SDL_GetTicks() - start_ms;
+                frozen_ms = started ? (SDL_GetTicks() - start_ms) : 0;
                 time_frozen = true;
                 paused = true;
                 phase = Phase::FinishedSuccess;
                 btnStart.label = "Iniciar"; // for replay
-                btnNew.enabled = true; // only on success per requirement
-                push_log("Objetivo alcançado!", SDL_Color{160,220,160,255});
+
+                // Save solution (.soluct) and plan (.plan) with versioning tied to current map file
+                if (!current_map_file.empty()) {
+                    ensure_session_meta(ren, font, win_w, win_h);
+                    MetaInfo mi = collect_meta_default();
+                    // Ensure path list includes the start cell at index 0
+                    std::vector<Point> final_path = path_stack;
+                    if (final_path.empty() || !(final_path.front().x==start.x && final_path.front().y==start.y)) {
+                        final_path.insert(final_path.begin(), start);
+                    }
+                    std::string content = build_solution_json(current_map_file, W, H, start, goal, entrance_heading, final_path, steps, collisions, sim_time_s, cost, mi);
+                    fs::path out = save_solution_versioned(current_map_file, content);
+                    push_log(std::string("Solução salva em: ") + out.string(), SDL_Color{180,220,180,255});
+                    // Save attempt plan log
+                    std::string plan_json = build_plan_json(current_map_file, W, H, start, goal, entrance_heading, step_log, "success", steps, collisions, score, mi);
+                    fs::path out_plan = save_plan_versioned(current_map_file, plan_json);
+                    push_log(std::string("Plano salvo em: ") + out_plan.string(), SDL_Color{180,220,180,255});
+                } else {
+                    push_log("Aviso: current_map_file vazio; solução não salva.", SDL_Color{230,200,160,255});
+                }
             }
             if (steps > max_steps_fail && phase==Phase::RunningExplore) {
                 paused = true; phase = Phase::FinishedFail; btnStart.label = "Teste"; btnNew.enabled = true; push_log("Falha: sem solução (limite)", SDL_Color{220,160,160,255});
+                // Save fail plan
+                if (!current_map_file.empty()) {
+                    ensure_session_meta(ren, font, win_w, win_h);
+                    MetaInfo mi = collect_meta_default();
+                    std::string plan_json = build_plan_json(current_map_file, W, H, start, goal, entrance_heading, step_log, "fail", steps, collisions, score, mi);
+                    fs::path out_plan = save_plan_versioned(current_map_file, plan_json);
+                    push_log(std::string("Plano salvo (falha) em: ") + out_plan.string(), SDL_Color{220,200,200,255});
+                }
             }
         }
 
+// ...
         SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
         SDL_RenderClear(ren);
         // Left drawing area (exclude sidebar)
         draw_grid(ren, OX, OY, CELL, W, H);
         draw_maze(ren, map, OX, OY, CELL);
+        // visualização do rastro (verde: caminho atual/correto; amarelo: descartado/errado)
+        draw_trail(ren, trail, W, H, OX, OY, CELL);
         draw_agent(ren, agent, heading, OX, OY, CELL);
-        float sim_time_s = time_frozen ? (frozen_ms / 1000.0f) : ((SDL_GetTicks() - start_ms) / 1000.0f);
+        float sim_time_s = time_frozen ? (frozen_ms / 1000.0f) : (started ? ((SDL_GetTicks() - start_ms) / 1000.0f) : 0.0f);
         int cost = steps + collisions * 5;
         char title[160];
-        std::snprintf(title, sizeof(title), "Maze Simulator - steps=%d col=%d time=%.1fs cost=%d %s", steps, collisions, sim_time_s, cost, paused?"(paused)":"");
+        std::snprintf(title, sizeof(title), "Maze Simulator - steps=%d col=%d time=%.1fs score=%.1f %s", steps, collisions, sim_time_s, score, paused?"(paused)":"");
         SDL_SetWindowTitle(win, title);
         // Sidebar
         draw_sidebar(ren, font, sidebar, log, (win_h-200)/18);

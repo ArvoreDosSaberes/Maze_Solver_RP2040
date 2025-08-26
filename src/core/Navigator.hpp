@@ -53,8 +53,11 @@ public:
     Decision decide(const SensorRead& sr);
 
     // ---------- Integração com mapa e planner (opcionais) ----------
-    /** @brief Define as dimensões do mapa interno. */
-    void setMapDimensions(int w, int h) { map_ = MazeMap(w,h); }
+    /** @brief Define as dimensões do mapa interno e reinicia estatísticas de visita. */
+    void setMapDimensions(int w, int h) {
+        map_ = MazeMap(w,h);
+        seen_.assign(w * h, 0);
+    }
     /** @brief Define célula inicial e objetivo e habilita o estado de objetivo. */
     void setStartGoal(Point s, Point g) { start_ = s; goal_ = g; has_goal_ = true; }
 
@@ -69,6 +72,14 @@ public:
     bool planRoute();
     /** @brief Indica se há um plano válido armazenado. */
     bool hasPlan() const { return !plan_.empty(); }
+
+    /**
+     * @brief Acessa a sequência de pontos do plano atual (somente leitura).
+     *
+     * Útil para visualização em simuladores. Retorna uma referência const ao
+     * vetor interno; será vazio quando não houver plano.
+     */
+    const std::vector<Point>& currentPlan() const { return plan_; }
 
     /**
      * @brief Decide considerando rota planejada (se existir); senão, fallback RightHand.
@@ -103,6 +114,11 @@ private:
     std::vector<Point> plan_{};           ///< Sequência de células (inclui start e goal)
 
     Heuristics heur_{};                   ///< Pesos para ações
+
+    /** @brief Contador de visitas por célula (para explorar novidades primeiro). */
+    std::vector<uint8_t> seen_{};
+    /** @brief Índice linear em `seen_`. */
+    inline int idx(int x, int y) const { return y * map_.width() + x; }
 
     /** @brief Calcula nota para uma ação dado o estado sensorial. */
     uint8_t score_for(Action a, const SensorRead& sr) const;
