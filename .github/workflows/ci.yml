@@ -19,7 +19,7 @@ jobs:
       - name: Set up dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ make libsdl2-dev doxygen graphviz
+          sudo apt-get install -y cmake g++ make libsdl2-dev libsdl2-ttf-dev doxygen graphviz
 
       - name: Configure (tests)
         run: cmake -B build-tests -S . -DBUILD_TESTS=ON -DBUILD_FIRMWARE=OFF -DBUILD_SIM=OFF
