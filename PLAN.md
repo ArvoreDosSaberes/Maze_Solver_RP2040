@@ -53,7 +53,7 @@ Construir um sistema embarcado (RP2040) que:
 - [x] Doxygen básico configurado (OUTPUT para `docs/`, alvo CMake `docs`).
 - [x] Unity excluído da indexação do Doxygen (`EXCLUDE = inc/Unity`).
 - [x] Licença definida para CC BY-SA 4.0 e arquivo `LICENSE` adicionado.
-- [x] Simulador: helpers para serializar/deserializar labirinto em JSON (dimensões, paredes, entrada, objetivo e metadados) e utilitários de filesystem (`maze/` e `make/`).
+- [x] Simulador: helpers para serializar/deserializar labirinto em JSON (dimensões, paredes, entrada, objetivo e metadados) e utilitários de filesystem (`maze/`).
  - [x] Simulador: coleta de metadados via variáveis de ambiente (`GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`) ou entrada interativa ao salvar JSON.
  - [x] Simulador: menu simples para escolher labirinto JSON existente em `maze/` ou gerar aleatório e salvar.
 - [x] CI/CD: Adicionar workflow de CI (GitHub Actions) para compilar testes e rodar CTest.
@@ -62,9 +62,11 @@ Construir um sistema embarcado (RP2040) que:
 
    - fazer o merge para o main
    - fazer o push para o repositório.
-### Próximos passos versão 0.0.2
-- [ ] Adicionar frame lateral com informações do carrinho e suas decisões como é feito no terminal
-- [ ] Adicionar um novo botão para iniciar a solução do labirinto, outro para gerar um novo labirinto aleatório e salvar.
+### Próximos passos versão 0.0.3
+- [x] Adicionar frame lateral com informações do carrinho e suas decisões como é feito no terminal
+- [x] Adicionar um novo botão para iniciar a solução do labirinto, outro para gerar um novo labirinto aleatório e salvar.
+  - Observação: requer `SDL2_ttf` para exibir textos/labels; sem ele, o simulador funciona, porém sem rótulos.
+  - Modal de metadados (uma vez por sessão) quando `SDL2_ttf` está presente; caso contrário, usa variáveis de ambiente (`GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`).
 
 ## Próximos passos (curto prazo)
 Consolidado em "Itens Implementados – Versão 0.0.1". Planejamento em andamento na seção de v0.0.2.

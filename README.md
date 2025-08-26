@@ -25,12 +25,14 @@ Projecto de firmware, core, simulador e testes para um carrinho resolvedor de la
 
 Documento relacionado:
 - `MotorControl_Implementations.md`: guia para criar novas implementações de `hal::MotorControl` (I2C/SPI/PWM...)
+- `SIMULATOR.md`: detalhes de funcionamento da UI, estados, tempo/cronômetro e JSON do simulador
+- `NAVIGATOR.md`: visão detalhada do sistema de navegação, planejamento (BFS) e heurísticas
 
 ## Pré-requisitos (host)
 - CMake >= 3.13
 - Compilador C++17 (g++/clang++)
 
-Para firmware RP2040, instale também o Pico SDK. Para o simulador, instale SDL2 (opcional).
+Para firmware RP2040, instale também o Pico SDK. Para o simulador, instale SDL2 (opcional) e, para rótulos/textos na UI, SDL2_ttf (opcional, recomendado).
 
 ## Compilar e executar os testes (host)
 ```bash
@@ -60,32 +62,44 @@ Se não aparecerem testes, execute os binários diretamente como acima.
 - `reach_goal_tests`: agente alcança o objetivo em 4 labirintos aleatórios
 
 ## Compilar o simulador (opcional)
-Requer SDL2 no sistema.
+Requer SDL2 no sistema. Para renderização de textos (rótulos de botões, log lateral e modal de metadados), instale SDL2_ttf.
 ```bash
 cmake -B build-sim -S . -DBUILD_SIM=ON -DBUILD_TESTS=OFF -DBUILD_FIRMWARE=OFF
 cmake --build build-sim --target simulator
 ./build-sim/simulator
 ```
 
-Se o CMake não encontrar SDL2, o alvo não será criado. Instale `libsdl2-dev` (Linux) ou equivalente.
+Se o CMake não encontrar SDL2, o alvo não será criado. Instale `libsdl2-dev` (Linux) ou equivalente. Para textos na UI, instale também `libsdl2-ttf-dev`.
 
-### Recursos do simulador (JSON e seleção de labirinto)
+### Recursos do simulador (UI, JSON e seleção)
 
+- Sidebar (lateral direita) com log de eventos e métricas (passos, colisões, custo).
+- Botões: "Iniciar/Parar" e "Novo" (gera labirinto aleatório, salva e reinicia).
 - Salvar/carregar labirintos em JSON na pasta `maze/` (criada automaticamente).
-- Menu simples de seleção: lista `maze/*.json` em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.
-- Metadados salvos no JSON: `creator_name`, `creator_email`, `github_profile`, `timestamp`.
+- Menu/seleção simples: lista `maze/*.json` em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.
+- Metadados salvos no JSON: `name`, `email`, `github`, `date`.
   - Pré-preenchimento por variáveis de ambiente: `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
-  - Se ausentes, o simulador solicita interativamente.
-- Utilitários de filesystem criam `maze/` e `make/` quando necessário.
+  - Se ausentes e `SDL2_ttf` presente, um modal interativo solicita os dados (uma vez por sessão). Sem `SDL2_ttf`, usa valores padrão das variáveis de ambiente.
+- Utilitários de filesystem criam `maze/` quando necessário.
+
+Comportamentos recentes implementados:
+- O cronômetro congela automaticamente ao alcançar o objetivo (o título da janela para de avançar).
+- O botão "Novo Labirinto" permanece habilitado após reset e após carregamento de mapa.
 
 Controles básicos: setas/WASD para navegar entre opções do menu (quando aplicável) e iniciar. Execução gráfica mostra paredes (verde) e agente (vermelho).
 
-#### Solução de problemas (SDL2)
+#### Solução de problemas (SDL2/SDL2_ttf)
 
 - Mensagem: `SDL2 not found; simulator target will not be built.`
   - Debian/Ubuntu: `sudo apt-get install libsdl2-dev`
   - Fedora: `sudo dnf install SDL2-devel`
   - Arch: `sudo pacman -S sdl2`
+
+- Mensagem: `SDL2_ttf not found; building simulator without text rendering`
+  - Debian/Ubuntu: `sudo apt-get install libsdl2-ttf-dev`
+  - Fedora: `sudo dnf install SDL2_ttf-devel`
+  - Arch: `sudo pacman -S sdl2_ttf`
+  - Efeito: o simulador executa, porém rótulos e textos não aparecem.
 
 ## Compilar o firmware (RP2040)
 Requer Pico SDK configurado no sistema.
