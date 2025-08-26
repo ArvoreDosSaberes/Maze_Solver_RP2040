@@ -21,10 +21,101 @@
 #include <SDL2/SDL.h>
 #include <cstdint>
 #include <cstdio>
+#include <random>
+#include <vector>
+#include <algorithm>
 #include "core/MazeMap.hpp"
 #include "core/Navigator.hpp"
 
 using namespace maze;
+
+/**
+ * @brief Remove paredes entre duas células adjacentes (carvar passagem).
+ */
+static void carve_between(MazeMap& m, int x1, int y1, int x2, int y2) {
+    if (x2 == x1 && y2 == y1-1) { m.set_wall(x1,y1,'N',false); }
+    else if (x2 == x1+1 && y2 == y1) { m.set_wall(x1,y1,'E',false); }
+    else if (x2 == x1 && y2 == y1+1) { m.set_wall(x1,y1,'S',false); }
+    else if (x2 == x1-1 && y2 == y1) { m.set_wall(x1,y1,'W',false); }
+}
+
+/**
+ * @brief Gera um labirinto perfeito via DFS aleatório, criando entrada e saída.
+ *
+ * - Inicializa todas as paredes como presentes.
+ * - Executa DFS para carvar passagens.
+ * - Cria uma entrada e uma saída em bordas opostas.
+ *
+ * @param m mapa a ser preenchido
+ * @param W largura
+ * @param H altura
+ * @param entrance célula interna da entrada (retorno)
+ * @param exit célula interna da saída (retorno)
+ * @param entrance_heading orientação sugerida de início (0=N,1=E,2=S,3=W)
+ */
+static void generate_maze(MazeMap& m, int W, int H, Point& entrance, Point& goal_cell, uint8_t& entrance_heading) {
+    // 1) Marca todas as paredes como presentes
+    for (int y=0; y<H; ++y) {
+        for (int x=0; x<W; ++x) {
+            m.set_wall(x,y,'N',true);
+            m.set_wall(x,y,'E',true);
+            m.set_wall(x,y,'S',true);
+            m.set_wall(x,y,'W',true);
+        }
+    }
+
+    // 2) DFS iterativo para carvar
+    std::random_device rd; std::mt19937 rng(rd());
+    std::uniform_int_distribution<int> dx(0, W-1), dy(0, H-1);
+    int sx = dx(rng), sy = dy(rng);
+    std::vector<uint8_t> vis(W*H, 0);
+    auto idx = [&](int x,int y){ return y*W + x; };
+    struct Node{int x,y;};
+    std::vector<Node> stack;
+    stack.push_back({sx,sy});
+    vis[idx(sx,sy)] = 1;
+
+    while (!stack.empty()) {
+        auto [cx, cy] = stack.back();
+        // vizinhos não visitados
+        std::vector<Node> nbrs;
+        if (cy>0 && !vis[idx(cx,cy-1)]) nbrs.push_back({cx,cy-1});
+        if (cx<W-1 && !vis[idx(cx+1,cy)]) nbrs.push_back({cx+1,cy});
+        if (cy<H-1 && !vis[idx(cx,cy+1)]) nbrs.push_back({cx,cy+1});
+        if (cx>0 && !vis[idx(cx-1,cy)]) nbrs.push_back({cx-1,cy});
+        if (!nbrs.empty()) {
+            std::shuffle(nbrs.begin(), nbrs.end(), rng);
+            auto [nx, ny] = nbrs.front();
+            carve_between(m, cx, cy, nx, ny);
+            vis[idx(nx,ny)] = 1;
+            stack.push_back({nx,ny});
+        } else {
+            stack.pop_back();
+        }
+    }
+
+    // 3) Escolhe entrada/saída em bordas opostas e abre a parede externa
+    std::uniform_int_distribution<int> side_dist(0, 1);
+    if (side_dist(rng) == 0) {
+        // Entrada no oeste, saída no leste
+        int ey = dy(rng);
+        int oy = dy(rng);
+        entrance = {0, ey};
+        goal_cell     = {W-1, oy};
+        m.set_wall(entrance.x, entrance.y, 'W', false); // abre para fora
+        m.set_wall(goal_cell.x, goal_cell.y, 'E', false);
+        entrance_heading = 1; // para Leste
+    } else {
+        // Entrada no norte, saída no sul
+        int ex = dx(rng);
+        int ox = dx(rng);
+        entrance = {ex, 0};
+        goal_cell     = {ox, H-1};
+        m.set_wall(entrance.x, entrance.y, 'N', false);
+        m.set_wall(goal_cell.x, goal_cell.y, 'S', false);
+        entrance_heading = 2; // para Sul
+    }
+}
 
 /**
  * @brief Desenha uma grade retangular para orientar a visualização do labirinto.
@@ -202,23 +293,26 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const int W = 8, H = 8, CELL = 60;
+    const int W = 16, H = 12, CELL = 40;
     const int OX = 50, OY = 50;
     MazeMap map(W, H);
-    // exemplo de paredes (um quadrado interno)
-    for (int x=2; x<6; ++x) { map.set_wall(x,2,'N',true); map.set_wall(x,5,'S',true); }
-    for (int y=2; y<6; ++y) { map.set_wall(2,y,'W',true); map.set_wall(5,y,'E',true); }
 
-    // Navigator setup with planning from start to goal
+    // Gera labirinto real com entrada e saída
+    Point entrance{}, goal_cell{};
+    uint8_t entrance_heading = 1;
+    generate_maze(map, W, H, entrance, goal_cell, entrance_heading);
+
+    // Navigator e planejamento do caminho da entrada até a saída
     maze::Navigator nav;
     nav.setStrategy(maze::Navigator::Strategy::RightHand);
     nav.setMapDimensions(W, H);
-    Point start{0,0};
-    Point goal{W-1,H-1};
+    Point start = entrance;
+    Point goal = goal_cell;
     nav.setStartGoal(start, goal);
-    // Observe boundary walls from the static map for initial cell (optional in this simple demo)
-    Point agent{0,0};
-    uint8_t heading = 1; // East
+    // Copia o mapa real gerado para o mapa interno do Navigator (para o BFS conhecer as paredes reais)
+    nav.map() = map;
+    Point agent = start;
+    uint8_t heading = entrance_heading;
     nav.planRoute();
 
     Uint32 start_ms = SDL_GetTicks();
@@ -235,7 +329,11 @@ int main(int argc, char** argv) {
                 if (e.key.keysym.sym == SDLK_ESCAPE) running = false;
                 if (e.key.keysym.sym == SDLK_SPACE) paused = !paused;
                 if (e.key.keysym.sym == SDLK_r) {
-                    agent = start; heading = 1; steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks();
+                    agent = start; heading = entrance_heading; steps = 0; collisions = 0; paused = false; last_step = SDL_GetTicks();
+                    nav.setMapDimensions(W, H);
+                    nav.setStartGoal(start, goal);
+                    nav.map() = map;
+                    nav.planRoute();
                 }
             }
         }
@@ -248,6 +346,8 @@ int main(int argc, char** argv) {
             // opcional: atualizar conhecimento do mapa
             nav.observeCellWalls(agent, sr, heading);
             auto dec = nav.decidePlanned(agent, heading, sr);
+            // debug: imprime decisão
+            std::printf("pos=(%d,%d) head=%u act=%d free[L=%d F=%d R=%d]\n", agent.x, agent.y, heading, (int)dec.action, (int)sr.left_free, (int)sr.front_free, (int)sr.right_free);
             // Check if action would hit a wall when moving forward
             bool moved = false;
             if (dec.action == maze::Action::Forward) {
@@ -257,7 +357,16 @@ int main(int argc, char** argv) {
                     apply_move(agent, heading, dec.action);
                     moved = true;
                 } else {
+                    // Plano inválido localmente: replaneja e faz fallback heurístico neste passo
                     collisions++;
+                    nav.planRoute();
+                    auto dec2 = nav.decide(sr);
+                    if (dec2.action == maze::Action::Forward) {
+                        absdir = abs_dirs[heading];
+                        if (can_move(map, agent, absdir)) { apply_move(agent, heading, dec2.action); moved = true; }
+                    } else {
+                        apply_move(agent, heading, dec2.action); moved = true;
+                    }
                 }
             } else {
                 apply_move(agent, heading, dec.action);
