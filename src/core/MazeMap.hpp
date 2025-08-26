@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cstdint>
+#include <string>
 
 /**
  * @file MazeMap.hpp
@@ -67,6 +68,45 @@ public:
         else if (dir=='E') { c.wall_e = present; if (in_bounds(x+1,y)) at(x+1,y).wall_w = present; }
         else if (dir=='S') { c.wall_s = present; if (in_bounds(x,y+1)) at(x,y+1).wall_n = present; }
         else if (dir=='W') { c.wall_w = present; if (in_bounds(x-1,y)) at(x-1,y).wall_e = present; }
+    }
+
+    /**
+     * @brief Gera uma representação ASCII do labirinto.
+     * 
+     * Exemplo de saída (células com paredes externas):
+     *  +--+--+
+     *  |     |
+     *  +  +--+
+     *  |  |
+     *  +--+--+
+     */
+    std::string to_string_ascii() const {
+        std::string out;
+        // Top border
+        out.reserve((w_ * 3 + 2) * (h_ * 2 + 1));
+        out += ' ';
+        for (int x = 0; x < w_; ++x) {
+            out += '+';
+            out += (at(x,0).wall_n ? "--" : "  ");
+        }
+        out += "+\n";
+        for (int y = 0; y < h_; ++y) {
+            // Left walls and spaces within cells
+            out += ' ';
+            for (int x = 0; x < w_; ++x) {
+                out += (at(x,y).wall_w ? '|' : ' ');
+                out += "  ";
+            }
+            out += (at(w_-1,y).wall_e ? "|\n" : " \n");
+            // Horizontal walls between this row and next
+            out += ' ';
+            for (int x = 0; x < w_; ++x) {
+                out += '+';
+                out += (at(x,y).wall_s ? "--" : "  ");
+            }
+            out += "+\n";
+        }
+        return out;
     }
 
 private:

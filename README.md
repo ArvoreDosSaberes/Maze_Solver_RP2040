@@ -69,6 +69,24 @@ cmake --build build-sim --target simulator
 
 Se o CMake não encontrar SDL2, o alvo não será criado. Instale `libsdl2-dev` (Linux) ou equivalente.
 
+### Recursos do simulador (JSON e seleção de labirinto)
+
+- Salvar/carregar labirintos em JSON na pasta `maze/` (criada automaticamente).
+- Menu simples de seleção: lista `maze/*.json` em ordem alfabética para abrir; opção de gerar labirinto aleatório e salvar.
+- Metadados salvos no JSON: `creator_name`, `creator_email`, `github_profile`, `timestamp`.
+  - Pré-preenchimento por variáveis de ambiente: `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE`.
+  - Se ausentes, o simulador solicita interativamente.
+- Utilitários de filesystem criam `maze/` e `make/` quando necessário.
+
+Controles básicos: setas/WASD para navegar entre opções do menu (quando aplicável) e iniciar. Execução gráfica mostra paredes (verde) e agente (vermelho).
+
+#### Solução de problemas (SDL2)
+
+- Mensagem: `SDL2 not found; simulator target will not be built.`
+  - Debian/Ubuntu: `sudo apt-get install libsdl2-dev`
+  - Fedora: `sudo dnf install SDL2-devel`
+  - Arch: `sudo pacman -S sdl2`
+
 ## Compilar o firmware (RP2040)
 Requer Pico SDK configurado no sistema.
 ```bash

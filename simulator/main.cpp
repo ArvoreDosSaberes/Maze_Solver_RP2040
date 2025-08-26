@@ -24,10 +24,19 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <ctime>
+#include <iostream>
+#include <cctype>
+#include <cstdlib>
 #include "core/MazeMap.hpp"
 #include "core/Navigator.hpp"
 
 using namespace maze;
+namespace fs = std::filesystem;
 
 /**
  * @brief Remove paredes entre duas células adjacentes (carvar passagem).
@@ -37,6 +46,166 @@ static void carve_between(MazeMap& m, int x1, int y1, int x2, int y2) {
     else if (x2 == x1+1 && y2 == y1) { m.set_wall(x1,y1,'E',false); }
     else if (x2 == x1 && y2 == y1+1) { m.set_wall(x1,y1,'S',false); }
     else if (x2 == x1-1 && y2 == y1) { m.set_wall(x1,y1,'W',false); }
+}
+
+// --- JSON e utilitários de filesystem ---
+// Formato salvo:
+// {
+//   "width": W, "height": H,
+//   "entrance": {"x":X, "y":Y, "heading":H},
+//   "goal": {"x":X, "y":Y},
+//   "cells": [ {"n":0/1, "e":0/1, "s":0/1, "w":0/1}, ... W*H ... ],
+//   "meta": {"name":"...","email":"...","github":"...","date":"ISO"}
+// }
+
+static std::string iso_datetime_now() {
+    std::time_t t = std::time(nullptr);
+    std::tm tm{};
+    #if defined(_WIN32)
+    localtime_s(&tm, &t);
+    #else
+    localtime_r(&t, &tm);
+    #endif
+    char buf[32];
+    std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%S%z", &tm);
+    return std::string(buf);
+}
+
+struct MetaInfo { std::string name, email, github, date; };
+
+static MetaInfo collect_meta_default() {
+    MetaInfo mi;
+    const char* n = std::getenv("GIT_AUTHOR_NAME");
+    const char* e = std::getenv("GIT_AUTHOR_EMAIL");
+    const char* g = std::getenv("GITHUB_PROFILE");
+    if (n) mi.name = n; if (e) mi.email = e; if (g) mi.github = g;
+    if (mi.name.empty())  { std::printf("Digite seu nome (Enter para vazio): "); std::getline(std::cin, mi.name); }
+    if (mi.email.empty()) { std::printf("Digite seu email (Enter para vazio): "); std::getline(std::cin, mi.email); }
+    if (mi.github.empty()) { std::printf("Perfil GitHub (URL ou user, Enter para vazio): "); std::getline(std::cin, mi.github); }
+    mi.date = iso_datetime_now();
+    return mi;
+}
+
+static std::string escape_json(const std::string& s) {
+    std::string o; o.reserve(s.size()+8);
+    for (char c: s) {
+        switch (c) {
+            case '"': o += "\\\""; break;
+            case '\\': o += "\\\\"; break;
+            case '\n': o += "\\n"; break;
+            case '\r': o += "\\r"; break;
+            case '\t': o += "\\t"; break;
+            default: o += c; break;
+        }
+    }
+    return o;
+}
+
+static bool save_maze_json(const fs::path& file, const MazeMap& m, Point entrance, Point goal, uint8_t heading, const MetaInfo& meta) {
+    std::ofstream ofs(file);
+    if (!ofs) return false;
+    ofs << "{\n";
+    ofs << "  \"width\": " << m.width() << ", \"height\": " << m.height() << ",\n";
+    ofs << "  \"entrance\": {\"x\": " << entrance.x << ", \"y\": " << entrance.y << ", \"heading\": " << (int)heading << "},\n";
+    ofs << "  \"goal\": {\"x\": " << goal.x << ", \"y\": " << goal.y << "},\n";
+    ofs << "  \"cells\": [\n";
+    for (int y=0; y<m.height(); ++y) {
+        for (int x=0; x<m.width(); ++x) {
+            const Cell& c = m.at(x,y);
+            ofs << "    {\"n\": " << (c.wall_n?1:0) << ", \"e\": " << (c.wall_e?1:0)
+                << ", \"s\": " << (c.wall_s?1:0) << ", \"w\": " << (c.wall_w?1:0) << "}";
+            if (!(x==m.width()-1 && y==m.height()-1)) ofs << ",";
+            ofs << "\n";
+        }
+    }
+    ofs << "  ],\n";
+    ofs << "  \"meta\": {\n";
+    ofs << "    \"name\": \"" << escape_json(meta.name) << "\",\n";
+    ofs << "    \"email\": \"" << escape_json(meta.email) << "\",\n";
+    ofs << "    \"github\": \"" << escape_json(meta.github) << "\",\n";
+    ofs << "    \"date\": \"" << escape_json(meta.date) << "\"\n";
+    ofs << "  }\n";
+    ofs << "}\n";
+    return true;
+}
+
+// Parser muito simples, assume JSON bem formado vindo do nosso save
+static bool load_maze_json(const fs::path& file, MazeMap& m, Point& entrance, Point& goal, uint8_t& heading) {
+    std::ifstream ifs(file);
+    if (!ifs) return false;
+    std::stringstream buffer; buffer << ifs.rdbuf();
+    const std::string s = buffer.str();
+    auto find_int = [&](const std::string& key, int def)->int{
+        auto p = s.find("\""+key+"\""); if (p==std::string::npos) return def;
+        p = s.find(':', p); if (p==std::string::npos) return def; ++p;
+        while (p<s.size() && std::isspace((unsigned char)s[p])) ++p;
+        int val=def; std::sscanf(s.c_str()+p, "%d", &val); return val;
+    };
+    int W = find_int("width", m.width());
+    int H = find_int("height", m.height());
+    if (W!=m.width() || H!=m.height()) {
+        m = MazeMap(W,H);
+    }
+    auto find_obj_int = [&](const std::string& obj, const std::string& key, int def)->int{
+        auto p = s.find("\""+obj+"\""); if (p==std::string::npos) return def;
+        p = s.find('{' , p); if (p==std::string::npos) return def;
+        auto q = s.find('}', p); if (q==std::string::npos) q = s.size();
+        auto k = s.find("\""+key+"\"", p); if (k==std::string::npos || k>q) return def;
+        k = s.find(':', k); if (k==std::string::npos) return def; ++k;
+        while (k<s.size() && std::isspace((unsigned char)s[k])) ++k;
+        int val=def; std::sscanf(s.c_str()+k, "%d", &val); return val;
+    };
+    entrance.x = find_obj_int("entrance", "x", 0);
+    entrance.y = find_obj_int("entrance", "y", 0);
+    heading    = (uint8_t)find_obj_int("entrance", "heading", 1);
+    goal.x     = find_obj_int("goal", "x", W-1);
+    goal.y     = find_obj_int("goal", "y", H-1);
+
+    // Limpa paredes
+    for (int y=0; y<m.height(); ++y) for (int x=0; x<m.width(); ++x) {
+        m.set_wall(x,y,'N',false); m.set_wall(x,y,'E',false); m.set_wall(x,y,'S',false); m.set_wall(x,y,'W',false);
+    }
+    // Extrai array cells
+    auto pcells = s.find("\"cells\""); if (pcells==std::string::npos) return true;
+    pcells = s.find('[', pcells); if (pcells==std::string::npos) return true;
+    size_t idx = 0; // idx em ordem linha-major
+    for (size_t p = pcells; p < s.size() && idx < (size_t)(m.width()*m.height()); ) {
+        p = s.find('{', p); if (p==std::string::npos) break; auto q = s.find('}', p); if (q==std::string::npos) break;
+        auto sub = s.substr(p, q-p+1);
+        int n=0,e=0,ss=0,w=0;
+        std::sscanf(sub.c_str(), "{%*[^0-9]%d%*[^0-9]%d%*[^0-9]%d%*[^0-9]%d", &n,&e,&ss,&w);
+        int x = idx % m.width(); int y = idx / m.width();
+        if (n) m.set_wall(x,y,'N',true);
+        if (e) m.set_wall(x,y,'E',true);
+        if (ss) m.set_wall(x,y,'S',true);
+        if (w) m.set_wall(x,y,'W',true);
+        idx++;
+        p = q+1;
+    }
+    return true;
+}
+
+static void ensure_dirs() {
+    try {
+        fs::create_directories("maze");
+        fs::create_directories("make");
+    } catch (...) { /* ignore */ }
+}
+
+static std::vector<fs::path> list_maze_files() {
+    std::vector<fs::path> out;
+    try {
+        if (fs::exists("maze") && fs::is_directory("maze")) {
+            for (auto& e : fs::directory_iterator("maze")) {
+                if (e.is_regular_file()) {
+                    auto p = e.path();
+                    if (p.extension()==".json") out.push_back(p);
+                }
+            }
+            std::sort(out.begin(), out.end());
+        }
+    } catch (...) {}
+    return out;
 }
 
 /**
@@ -293,14 +462,72 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const int W = 16, H = 12, CELL = 40;
+    const int CELL = 40;
     const int OX = 50, OY = 50;
-    MazeMap map(W, H);
+    ensure_dirs();
 
-    // Gera labirinto real com entrada e saída
+    // Menu de seleção (GUI mínima via título da janela)
+    // Itens: [0] Aleatório ... depois arquivos encontrados em maze/
+    auto files = list_maze_files();
+    std::vector<std::string> items;
+    items.push_back("Aleatório (gerar e salvar em make/)");
+    for (auto& p: files) items.push_back(p.filename().string());
+    int sel = 0;
+
+    bool choosing = true;
+    int W = 16, H = 12; // padrão; pode ser sobrescrito por arquivo
+    MazeMap map(W, H);
     Point entrance{}, goal_cell{};
     uint8_t entrance_heading = 1;
-    generate_maze(map, W, H, entrance, goal_cell, entrance_heading);
+
+    SDL_SetWindowTitle(win, ("Escolha: " + items[sel]).c_str());
+    while (choosing) {
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) { choosing = false; }
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_ESCAPE) { choosing = false; }
+                else if (e.key.keysym.sym == SDLK_UP) { sel = (sel + (int)items.size() - 1) % (int)items.size(); SDL_SetWindowTitle(win, ("Escolha: " + items[sel]).c_str()); }
+                else if (e.key.keysym.sym == SDLK_DOWN) { sel = (sel + 1) % (int)items.size(); SDL_SetWindowTitle(win, ("Escolha: " + items[sel]).c_str()); }
+                else if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_KP_ENTER) {
+                    // Executa seleção
+                    if (sel == 0) {
+                        // Aleatório
+                        generate_maze(map, W, H, entrance, goal_cell, entrance_heading);
+                        // Salva
+                        MetaInfo mi = collect_meta_default();
+                        char fname[128];
+                        std::snprintf(fname, sizeof(fname), "maze_%dx%d_%ld.json", W, H, (long)std::time(nullptr));
+                        fs::path out = fs::path("make") / fname;
+                        if (!save_maze_json(out, map, entrance, goal_cell, entrance_heading, mi)) {
+                            std::fprintf(stderr, "Falha ao salvar %s\n", out.string().c_str());
+                        } else {
+                            std::printf("Salvo: %s\n", out.string().c_str());
+                        }
+                    } else {
+                        // Carrega arquivo
+                        fs::path f = files[sel-1];
+                        // Inicia com dimensões padrão; loader pode redimensionar
+                        if (!load_maze_json(f, map, entrance, goal_cell, entrance_heading)) {
+                            std::fprintf(stderr, "Falha ao carregar %s, gerando aleatório.\n", f.string().c_str());
+                            generate_maze(map, W, H, entrance, goal_cell, entrance_heading);
+                        } else {
+                            W = map.width(); H = map.height();
+                        }
+                    }
+                    choosing = false;
+                }
+            }
+        }
+        SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+        SDL_RenderClear(ren);
+        // Desenha apenas grade para indicar que está em menu
+        draw_grid(ren, OX, OY, CELL, 8, 4);
+        SDL_RenderPresent(ren);
+    }
+    if (SDL_GetWindowFlags(win) & SDL_WINDOW_SHOWN) {
+        SDL_SetWindowTitle(win, "Maze Simulator");
+    }
 
     // Navigator e planejamento do caminho da entrada até a saída
     maze::Navigator nav;

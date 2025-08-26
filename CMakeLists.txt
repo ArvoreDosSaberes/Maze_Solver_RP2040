@@ -292,6 +292,7 @@ if(BUILD_SIM)
         )
         target_include_directories(simulator PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/src
+            ${CMAKE_CURRENT_LIST_DIR}/inc
             ${SDL2_INCLUDE_DIRS}
         )
         target_link_libraries(simulator PRIVATE ${SDL2_LIBRARIES})

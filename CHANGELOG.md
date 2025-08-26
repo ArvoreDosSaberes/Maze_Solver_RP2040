@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.2] - 2025-08-26
+### Added
+- Simulator: JSON load/save helpers (dimensions, walls, entrance, goal, metadata).
+- Simulator: metadata capture via env vars `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GITHUB_PROFILE` or interactive prompts.
+- Simulator: filesystem helpers to ensure `maze/` and `make/` directories and list `maze/*.json`.
+- Simulator: simple menu to select an existing JSON maze or generate a random one and save.
+
+### Changed
+- Documentation: updated `PLAN.md` and `README.md` with simulator JSON features, environment variables, and SDL2 troubleshooting.
+
+### Fixed
+- Corrected misplaced code and missing includes in `simulator/main.cpp` that caused build/syntax issues.
+
+### Notes
+- Build: simulator target requires SDL2 development headers installed.
+
 ## [0.0.1] - 2025-08-25
 ### Added
 - Firmware `firmware/main.cpp` com laço de controle periódico, comandos de boot (USB CDC), integração `Navigator`/`PersistentMemory`, HAL de motores e sensores IR.
@@ -22,3 +38,4 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Firmware build requer Pico SDK configurado. Simulador requer SDL2.
 
 [0.0.1]: https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1
+[0.0.2]: https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.2
