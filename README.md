@@ -160,7 +160,7 @@ cmake --build build --target docs -j
 ```
 
 ## Versão
-Versão atual: **v0.0.1**.
+Versão atual: **v0.0.3**.
 
 - Notas de versão: veja `CHANGELOG.md`
 - Release no GitHub: https://github.com/ArvoreDosSaberes/Maze_Solver_RP2040/releases/tag/v0.0.1
