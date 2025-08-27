@@ -187,4 +187,5 @@ Este projeto é licenciado sob a licença Creative Commons Attribution-ShareAlik
 
 ## Vídeo do Simulador
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Dgt_OXN69KE?si=RoytezcZZtrtd5MB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Simulador RP2040 Maze Solver](https://img.youtube.com/vi/Dgt_OXN69KE/0.jpg)](https://youtu.be/Dgt_OXN69KE?si=5vGfELHlX3i1WIu9)
+
