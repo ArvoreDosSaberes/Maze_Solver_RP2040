@@ -185,3 +185,6 @@ Este projeto é licenciado sob a licença Creative Commons Attribution-ShareAlik
 - Texto da licença: LICENSE
 - Resumo: https://creativecommons.org/licenses/by-sa/4.0/
 
+## Vídeo do Simulador
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Dgt_OXN69KE?si=RoytezcZZtrtd5MB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
